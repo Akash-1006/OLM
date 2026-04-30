@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, request, jsonify, send_from_directory
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import (Application, CommandHandler, CallbackQueryHandler)
 from bot.handlers.lead import start_lead
 from bot.handlers.followup import handle_followup_response
@@ -15,8 +15,44 @@ from bot.scheduler import (
 from bot.daily_digest import register_daily_digest
 from db import engine, Base, SessionLocal
 from config import TELEGRAM_TOKEN, WEBHOOK_URL
-import asyncio, threading
+import asyncio, threading, os as _os
 from datetime import datetime, timedelta, timezone
+from functools import wraps
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  SECURITY
+# ══════════════════════════════════════════════════════════════════════════════
+ADMIN_PASSWORD = _os.getenv("ADMIN_PASSWORD")
+if not ADMIN_PASSWORD:
+    # Raising error or using a default is a choice; here we keep a default but warn.
+    ADMIN_PASSWORD = "mcube@admin123"
+
+def require_admin(f):
+    """Protect admin API endpoints with X-Admin-Key header OR ?key= query param."""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        key = (request.headers.get("X-Admin-Key") or
+               request.args.get("key") or "")
+        if key != ADMIN_PASSWORD:
+            return jsonify({"error": "Unauthorized"}), 401
+        return f(*args, **kwargs)
+    return decorated
+
+# Protect app API endpoints with MINIAPP_ACCESS_KEY.
+def require_app_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        access_key = _os.getenv("MINIAPP_ACCESS_KEY", "").strip()
+        # If MINIAPP_ACCESS_KEY is set in .env, enforce it. 
+        # If not set, we allow the request (legacy behavior, but encouraged to set one).
+        if access_key:
+            request_key = (request.headers.get("X-Access-Key") or 
+                           request.args.get("key") or 
+                           request.form.get("key") or "")
+            if request_key != access_key:
+                return jsonify({"error": "Unauthorized"}), 401
+        return f(*args, **kwargs)
+    return decorated
 
 app = Flask(__name__)
 Base.metadata.create_all(engine)
@@ -43,7 +79,7 @@ async def init_bot():
     await telegram_app.initialize()
     await telegram_app.start()
     await telegram_app.bot.set_webhook(f"{WEBHOOK_URL}/webhook")
-    print("Telegram bot initialized & webhook set")
+    print("✅ Telegram bot initialized & webhook set")
 
 # Block until bot is ready before Flask starts accepting traffic
 asyncio.run_coroutine_threadsafe(init_bot(), loop).result(timeout=15)
@@ -91,6 +127,7 @@ def serve_miniapp():
 
 # ── Receive lead from Mini App form submission ────────────────────────────────
 @app.route("/submit_lead", methods=["POST"])
+@require_app_auth
 def submit_lead():
     import json, os
     from werkzeug.utils import secure_filename
@@ -107,6 +144,19 @@ def submit_lead():
     grade        = f.get("grade", "").strip()
     quantity     = f.get("quantity", "").strip()
     remarks      = f.get("remarks", "").strip()
+    next_followup_date_str = f.get("next_followup_date", "").strip()
+
+    # Parse next_followup_date — datetime-local input gives 'YYYY-MM-DDTHH:MM' in user's local time (IST)
+    from datetime import datetime as _dt, timedelta as _td
+    _IST_OFFSET = _td(hours=5, minutes=30)
+    next_followup_date = None
+    if next_followup_date_str:
+        try:
+            # Parse as naive local (IST) → convert to UTC
+            local_dt = _dt.fromisoformat(next_followup_date_str)   # e.g. 2026-04-10T14:30
+            next_followup_date = local_dt - _IST_OFFSET             # store as UTC
+        except ValueError:
+            return jsonify({"error": "Invalid next_followup_date format. Expected YYYY-MM-DDTHH:MM."}), 400
 
     try:
         latitude  = float(f.get("latitude"))  if f.get("latitude")  else None
@@ -132,6 +182,7 @@ def submit_lead():
         "stage":        stage,
         "material":     material,
         "quantity":     quantity,
+        "next_followup_date": next_followup_date_str,
     }.items() if not v]
 
     if missing:
@@ -174,7 +225,9 @@ def submit_lead():
             longitude=longitude,
             location=f"{latitude:.5f},{longitude:.5f}",
             sales_exec_id=chat_id,
-            sales_exec_name=user_name,        # ← saved for display in admin/history
+            sales_exec_name=user_name,
+            next_followup_date=next_followup_date,
+            last_user_update_at=datetime.utcnow(),
         )
         session.add(lead)
         session.commit()
@@ -189,12 +242,12 @@ def submit_lead():
                 stage=stage,       # drives Pile=daily, Footing/Slab=3d, Flooring=4d, Column=7d
             )
 
-        print(f"Lead #{lead.id} saved — {company_name} | {stage} | {material}")
+        print(f"✅ Lead #{lead.id} saved — {company_name} | {stage} | {material}")
         return jsonify({"status": "ok", "lead_id": lead.id}), 200
 
     except Exception as e:
         session.rollback()
-        print(f"DB error: {e}")
+        print(f"❌ DB error: {e}")
         return jsonify({"error": "Database error"}), 500
     finally:
         session.close()
@@ -212,10 +265,11 @@ def serve_miniapp_update():
 
 # ── Generate Quote PDF and send to Telegram ───────────────────────────────────
 @app.route("/generate_quote", methods=["POST"])
+@require_app_auth
 def generate_quote():
     """
     Accepts JSON: company_name, quantity, grade, rate, location, tg_user.
-    Generates a 4-page Mcube quote PDF (page 1 dynamic, pages 2-4 from template)
+    Generates a 4-page Titans quote PDF (page 1 dynamic, pages 2-4 from template)
     and sends it to the user's Telegram chat.
     """
     import io, os, json as _json
@@ -276,12 +330,12 @@ def generate_quote():
         )
         buf.seek(0)
     except Exception as e:
-        print(f"Quote build error: {e}")
+        print(f"❌ Quote build error: {e}")
         return jsonify({"error": f"PDF generation failed: {e}"}), 500
 
     now_ist  = datetime.now(timezone(timedelta(hours=5, minutes=30)))
     date_str = now_ist.strftime("%d %b %Y")
-    filename = f"Mcube_Quote_{company.replace(' ','_')}_{date_str.replace(' ','')}.pdf"
+    filename = f"Titans_Quote_{company.replace(' ','_')}_{date_str.replace(' ','')}.pdf"
 
     try:
         qty_f  = float(quantity)
@@ -309,10 +363,10 @@ def generate_quote():
     try:
         # Increased timeout to 30s to handle network latency or larger PDFs
         future.result(timeout=30)
-        print(f"Quote sent to {chat_id} — {company} | {grade} | {qty_f:.0f} cum")
+        print(f"📄 Quote sent to {chat_id} — {company} | {grade} | {qty_f:.0f} cum")
         return jsonify({"status": "ok", "filename": filename})
     except Exception as e:
-        print(f"Quote send error: {e}")
+        print(f"❌ Quote send error: {e}")
         return jsonify({"error": str(e)}), 500
 
 
@@ -335,7 +389,9 @@ def api_auth():
 
 
 @app.route("/api/lead/<int:lead_id>")
+@require_app_auth
 def api_lead_detail(lead_id):
+    from datetime import timedelta, timezone
     user_id = request.args.get("user_id", type=int)
     if not user_id:
         return jsonify({"error": "user_id is required"}), 400
@@ -347,6 +403,14 @@ def api_lead_detail(lead_id):
                 .first())
         if not lead:
             return jsonify({"error": "Lead not found"}), 404
+
+        # Convert stored UTC datetime back to IST string for the datetime-local input
+        _IST = timedelta(hours=5, minutes=30)
+        nfd_ist = None
+        if lead.next_followup_date:
+            nfd_aware = lead.next_followup_date.replace(tzinfo=timezone.utc) \
+                if lead.next_followup_date.tzinfo is None else lead.next_followup_date
+            nfd_ist = (nfd_aware + _IST).strftime("%Y-%m-%dT%H:%M")
 
         return jsonify({
             "id":           lead.id,
@@ -361,12 +425,14 @@ def api_lead_detail(lead_id):
             "remarks":      lead.remarks,
             "latitude":     lead.latitude,
             "longitude":    lead.longitude,
+            "next_followup_date": nfd_ist,
         })
     finally:
         session.close()
 
 # ── API: Update lead ──────────────────────────────────────────────────────────
 @app.route("/api/lead/<int:lead_id>/update", methods=["POST"])
+@require_app_auth
 def api_update_lead(lead_id):
     import json as _json
     f = request.form
@@ -403,6 +469,22 @@ def api_update_lead(lead_id):
         if f.get("quantity"):      lead.quantity     = f.get("quantity").strip()
         if f.get("remarks"):       lead.remarks      = f.get("remarks").strip()
 
+        # Update manual interaction timestamp
+        lead.last_user_update_at = datetime.utcnow()
+
+        # Parse and save the custom follow-up datetime (IST → UTC)
+        nfd_str = f.get("next_followup_date", "").strip()
+        if nfd_str:
+            from datetime import datetime as _dt, timedelta as _td
+            _IST_OFFSET = _td(hours=5, minutes=30)
+            try:
+                local_dt = _dt.fromisoformat(nfd_str)        # naive IST
+                lead.next_followup_date = local_dt - _IST_OFFSET   # stored as UTC
+            except ValueError:
+                return jsonify({"error": "Invalid next_followup_date format. Expected YYYY-MM-DDTHH:MM."}), 400
+        else:
+            return jsonify({"error": "next_followup_date is required"}), 400
+
         # Save update snapshot for history timeline
         new_stage = lead.stage   # capture after potential update above
         snapshot = LeadUpdate(
@@ -425,19 +507,20 @@ def api_update_lead(lead_id):
         # Reset follow-up timer on any update — logic now checks DB times
         reschedule_on_update(lead.id, user_id, lead.stage, telegram_app.bot, loop)
         
-        print(f"Lead #{lead_id} updated by {user_name} ({user_id})")
+        print(f"✏️ Lead #{lead_id} updated by {user_name} ({user_id})")
         return jsonify({"status": "ok", "lead_id": lead.id}), 200
 
     except Exception as e:
         session.rollback()
-        print(f"Update error: {e}")
+        print(f"❌ Update error: {e}")
         return jsonify({"error": "Database error"}), 500
     finally:
         session.close()
 
 
-# ── TEST: Trigger reminder instantly — remove in production ───────────────────
+# TEST: Trigger reminder instantly — protected in production 
 @app.route("/testmessage")
+@require_admin
 def test_reminder():
     from bot.scheduler import send_followup_reminder
     user_id = request.args.get("user_id", type=int)
@@ -467,7 +550,7 @@ def test_reminder():
             loop=loop,
         )
         return jsonify({
-            "status": "Test reminder sent",
+            "status": "✅ Test reminder sent",
             "lead_id": lead_id,
             "chat_id": user_id
         }), 200
@@ -475,6 +558,7 @@ def test_reminder():
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/stats")
+@require_app_auth
 def api_stats():
     user_id = request.args.get("user_id", type=int)
     if not user_id:
@@ -512,6 +596,7 @@ def api_stats():
 
 # ── API: Goals ────────────────────────────────────────────────────────────────
 @app.route("/api/goals")
+@require_app_auth
 def api_goals():
     from datetime import datetime
     user_id = request.args.get("user_id", type=int)
@@ -555,6 +640,7 @@ def api_goals():
 
 # ── API: History ──────────────────────────────────────────────────────────────
 @app.route("/api/history")
+@require_app_auth
 def api_history():
     user_id = request.args.get("user_id", type=int)
     if not user_id:
@@ -587,6 +673,18 @@ def api_history():
                 "updated_at":  u.updated_at.isoformat() if u.updated_at else None,
             })
 
+        def _get_is_overdue(l):
+            if l.site_status in ("Won", "Lost") or not l.last_followup_at:
+                return False
+            if l.last_user_update_at and l.last_user_update_at >= l.last_followup_at:
+                return False
+            # Overdue if reminder was sent and now is after 6:30 PM of that day
+            IST = timezone(timedelta(hours=5, minutes=30))
+            lfa_ist  = l.last_followup_at.replace(tzinfo=timezone.utc).astimezone(IST)
+            deadline = lfa_ist.replace(hour=18, minute=30, second=0, microsecond=0)
+            now_ist  = datetime.now(timezone.utc).astimezone(IST)
+            return now_ist > deadline
+
         return jsonify({
             "leads": [{
                 "id":           l.id,
@@ -600,8 +698,11 @@ def api_history():
                 "quantity":     l.quantity,
                 "remarks":      l.remarks,
                 "location":     l.location,
-                "created_at":   l.created_at.isoformat() if l.created_at else None,
-                "updates":      updates_by_lead.get(l.id, []),  # timeline of updates
+                "created_at":         l.created_at.isoformat()         if l.created_at else None,
+                "last_followup_at":   l.last_followup_at.isoformat()   if l.last_followup_at else None,
+                "next_followup_date": l.next_followup_date.isoformat() if l.next_followup_date else None,
+                "is_overdue":         _get_is_overdue(l),
+                "updates":            updates_by_lead.get(l.id, []),  # timeline of updates
             } for l in leads]
         })
     finally:
@@ -611,21 +712,7 @@ def api_history():
 # ══════════════════════════════════════════════════════════════════════════════
 #  ADMIN DASHBOARD — /admin routes
 # ══════════════════════════════════════════════════════════════════════════════
-import os as _os
-from functools import wraps
-
-ADMIN_PASSWORD = _os.getenv("ADMIN_PASSWORD", "mcube@admin123")
-
-def require_admin(f):
-    """Protect admin API endpoints with X-Admin-Key header OR ?key= query param."""
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        key = (request.headers.get("X-Admin-Key") or
-               request.args.get("key") or "")
-        if key != ADMIN_PASSWORD:
-            return jsonify({"error": "Unauthorized"}), 401
-        return f(*args, **kwargs)
-    return decorated
+# (require_admin code moved to top)
 
 
 @app.route("/")
@@ -636,7 +723,7 @@ def home():
     with open(_os.path.join("admin", "dashboard.html"), "r") as f:
         html = f.read()
     html = html.replace("ADMIN_BASE_URL_PLACEHOLDER", base_url)
-    html = html.replace("ADMIN_PASSWORD_PLACEHOLDER", ADMIN_PASSWORD)
+    # Password injection removed for security
     return html, 200, {"Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store, no-cache, must-revalidate"}
 
 @app.route("/admin")
@@ -647,20 +734,47 @@ def admin_dashboard():
     with open(_os.path.join("admin", "dashboard.html"), "r") as f:
         html = f.read()
     html = html.replace("ADMIN_BASE_URL_PLACEHOLDER", base_url)
-    html = html.replace("ADMIN_PASSWORD_PLACEHOLDER", ADMIN_PASSWORD)
+    # Password injection removed for security
     return html, 200, {"Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store, no-cache, must-revalidate"}
 
 @app.route("/admin/api/overview")
 @require_admin
 def admin_overview():
-    from sqlalchemy import func
+    from models.lead import Lead
+    from models.lead_update import LeadUpdate
+    from sqlalchemy import func, or_
+    
     session = SessionLocal()
     try:
         total       = session.query(Lead).count()
         won         = session.query(Lead).filter(Lead.site_status == "Won").count()
         lost        = session.query(Lead).filter(Lead.site_status == "Lost").count()
         in_progress = max(total - won - lost, 0)
-        recent      = session.query(Lead).order_by(Lead.created_at.desc()).limit(15).all()
+        
+        # Overdue = Reminder sent, but no user update since then
+        # PLUS Grace period: only after 6:30 PM IST of the followup date
+        def _get_is_overdue(l):
+            if l.site_status in ("Won", "Lost") or not l.last_followup_at:
+                return False
+            # Check for update AFTER reminder
+            if l.last_user_update_at and l.last_user_update_at >= l.last_followup_at:
+                return False
+            
+            # Grace: 6:30 PM IST
+            IST = timezone(timedelta(hours=5, minutes=30))
+            lfa_ist = l.last_followup_at.replace(tzinfo=timezone.utc).astimezone(IST)
+            deadline = lfa_ist.replace(hour=18, minute=00, second=0, microsecond=0)
+            now_ist  = datetime.now(timezone.utc).astimezone(IST)
+            
+            return now_ist > deadline
+
+        candidates = session.query(Lead).filter(
+            Lead.site_status.notin_(["Won", "Lost"]),
+            Lead.last_followup_at.isnot(None)
+        ).all()
+        overdue_count = sum(1 for l in candidates if _get_is_overdue(l))
+        
+        recent = session.query(Lead).order_by(Lead.created_at.desc()).limit(15).all()
 
         # Fetch latest update timestamp per lead in one query
         lead_ids = [l.id for l in recent]
@@ -672,6 +786,7 @@ def admin_overview():
 
         return jsonify({
             "total": total, "won": won, "lost": lost, "in_progress": in_progress,
+            "overdue": overdue_count,
             "recent": [{
                 "id":              l.id,
                 "company_name":    l.company_name,
@@ -682,6 +797,7 @@ def admin_overview():
                 "material":        l.material,
                 "quantity":        l.quantity,
                 "sales_exec_name": l.sales_exec_name,
+                "is_overdue":      _get_is_overdue(l),
                 "created_at":      l.created_at.isoformat() if l.created_at else None,
                 "last_updated":    latest_updates[l.id].isoformat()
                                    if l.id in latest_updates
@@ -715,11 +831,24 @@ def admin_leads():
                 "last_updated": r.latest.isoformat() if r.latest else None
             } for r in raw
         }
+        
+        def _get_is_overdue(l):
+            if l.site_status in ("Won", "Lost") or not l.last_followup_at:
+                return False
+            if l.last_user_update_at and l.last_user_update_at >= l.last_followup_at:
+                return False
+            IST = timezone(timedelta(hours=5, minutes=30))
+            lfa_ist = l.last_followup_at.replace(tzinfo=timezone.utc).astimezone(IST)
+            deadline = lfa_ist.replace(hour=18, minute=00, second=0, microsecond=0)
+            now_ist  = datetime.now(timezone.utc).astimezone(IST)
+            return now_ist > deadline
+
         return jsonify({"leads": [{
             "id": l.id, "company_name": l.company_name, "client_name": l.client_name,
             "client_phone": l.client_phone, "site_status": l.site_status,
             "stage": l.stage, "material": l.material, "quantity": l.quantity,
             "sales_exec_name": l.sales_exec_name,
+            "is_overdue": _get_is_overdue(l),
             "created_at":   l.created_at.isoformat()   if l.created_at   else None,
             "last_updated": upd_counts.get(l.id, {}).get("last_updated") or
                             (l.created_at.isoformat() if l.created_at else None),
@@ -746,6 +875,8 @@ def admin_lead_detail(lead_id):
             "quantity": l.quantity, "remarks": l.remarks,
             "latitude": l.latitude, "longitude": l.longitude, "location": l.location,
             "sales_exec_name": l.sales_exec_name,
+            "next_followup_date": l.next_followup_date.isoformat() if l.next_followup_date else None,
+            "last_followup_at": l.last_followup_at.isoformat() if l.last_followup_at else None,
             "created_at":   l.created_at.isoformat() if l.created_at else None,
             "last_updated": updates[-1].updated_at.isoformat() if updates else
                             (l.created_at.isoformat() if l.created_at else None),
@@ -754,6 +885,108 @@ def admin_lead_detail(lead_id):
                 "material": u.material, "quantity": u.quantity, "remarks": u.remarks,
                 "updated_at": u.updated_at.isoformat() if u.updated_at else None,
             } for u in updates]
+        })
+    finally:
+        session.close()
+
+@app.route("/admin/api/lead/<int:lead_id>/reassign", methods=["POST"])
+@require_admin
+def admin_lead_reassign(lead_id):
+    """Transfer a lead to a new sales executive."""
+    data = request.json
+    new_exec_id   = data.get("sales_exec_id")
+    new_exec_name = data.get("sales_exec_name")
+    
+    if not new_exec_id or not new_exec_name:
+        return jsonify({"error": "sales_exec_id and sales_exec_name are required"}), 400
+    
+    session = SessionLocal()
+    try:
+        lead = session.query(Lead).filter(Lead.id == lead_id).first()
+        if not lead:
+            return jsonify({"error": "Lead not found"}), 404
+            
+        old_name = lead.sales_exec_name
+        lead.sales_exec_id   = int(new_exec_id)
+        lead.sales_exec_name = new_exec_name
+        
+        # Log the re-assignment as an update snapshot
+        snapshot = LeadUpdate(
+            lead_id         = lead.id,
+            sales_exec_id   = lead.sales_exec_id,
+            sales_exec_name = lead.sales_exec_name,
+            company_name    = lead.company_name,
+            client_name     = lead.client_name,
+            client_phone    = lead.client_phone,
+            site_status     = lead.site_status,
+            stage           = lead.stage,
+            material        = lead.material,
+            grade           = lead.grade,
+            quantity        = lead.quantity,
+            remarks         = f"⚠️ REASSIGNED by Admin (from {old_name} to {new_exec_name})",
+        )
+        session.add(snapshot)
+        session.commit()
+        
+        # Reschedule reminders specifically for the NEW chat_id
+        reschedule_on_update(lead.id, lead.sales_exec_id, lead.stage, telegram_app.bot, loop)
+        
+        # --- Notify New Sales Executive via Telegram ---
+        try:
+            import os
+            # Fallback for base_url from WEBHOOK_URL if MINIAPP_BASE_URL is missing
+            base_url = (os.getenv("MINIAPP_BASE_URL") or os.getenv("WEBHOOK_URL") or "").rstrip("/")
+            update_url = f"{base_url}/miniapp/update?lead_id={lead.id}&user_id={lead.sales_exec_id}"
+            
+            reassign_text = (
+                f"🔀 <b>Lead Reassigned to You!</b>\n\n"
+                f"Hi {new_exec_name},\n"
+                f"Admin has transferred the following lead to you:\n\n"
+                f"🏢 <b>{lead.company_name}</b>\n"
+                f"👤 <b>{lead.client_name}</b> ({lead.client_phone})\n"
+                f"📍 <b>Stage:</b> {lead.stage}\n"
+                # f"📦 <b>Prev Exec:</b> {old_name}\n"
+                f"⏳ <b>Status:</b> {lead.site_status}\n\n"
+                f"Please take over the follow-up process. Tap the button below to view or update."
+            )
+            
+            kb = InlineKeyboardMarkup([[
+                InlineKeyboardButton("📝 Update Submission", web_app=WebAppInfo(url=update_url))
+            ]])
+            
+            async def _send_safe(cid, text, markup):
+                try:
+                    await telegram_app.bot.send_message(
+                        chat_id=cid, text=text, parse_mode="HTML", reply_markup=markup
+                    )
+                    print(f"✅ Notification sent to chat {cid} for lead re-assignment.")
+                except Exception:
+                    import traceback
+                    print(f"❌ Telegram send error:\n{traceback.format_exc()}")
+
+            asyncio.run_coroutine_threadsafe(_send_safe(lead.sales_exec_id, reassign_text, kb), loop)
+        except Exception:
+            import traceback
+            print(f"⚠️ Notification preparation error:\n{traceback.format_exc()}")
+        
+        print(f"🔀 Lead #{lead_id} reassigned by Admin: {old_name} → {new_exec_name}")
+        return jsonify({"status": "ok", "lead_id": lead.id})
+    except Exception as e:
+        session.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        session.close()
+
+@app.route("/admin/api/exec_list")
+@require_admin
+def admin_exec_list():
+    """Return a flat list of unique sales executives for re-assignment dropdown."""
+    session = SessionLocal()
+    try:
+        # Get unique execs from Lead table (where we have the mapping)
+        rows = session.query(Lead.sales_exec_id, Lead.sales_exec_name).distinct().all()
+        return jsonify({
+            "execs": [{"id": str(r[0]), "name": r[1]} for r in rows if r[0]]
         })
     finally:
         session.close()
@@ -1054,7 +1287,7 @@ def admin_export_csv():
         return Response(
             output.getvalue(),
             mimetype="text/csv",
-            headers={"Content-Disposition": f"attachment; filename=mcube_leads_{date_str}.csv"}
+            headers={"Content-Disposition": f"attachment; filename=titans_leads_{date_str}.csv"}
         )
     finally:
         session.close()
@@ -1176,7 +1409,7 @@ def admin_export_excel():
         date_str = to_ist(datetime.now(timezone.utc))
 
         summary_rows = [
-            ("Mcube M3 — Lead Export", ""),
+            ("Titans— Lead Export", ""),
             (f"Generated at (IST)", date_str),
             ("", ""),
             ("Total Leads", total),
@@ -1198,7 +1431,7 @@ def admin_export_excel():
         return Response(
             buf.getvalue(),
             mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            headers={"Content-Disposition": f"attachment; filename=mcube_leads_{date_label}.xlsx"}
+            headers={"Content-Disposition": f"attachment; filename=titans_leads_{date_label}.xlsx"}
         )
     finally:
         session.close()

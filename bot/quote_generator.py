@@ -1,6 +1,6 @@
 # bot/quote_generator.py
 """
-Generates a Mcube M3 RMX quotation PDF by stamping dynamic text
+Generates a Titans quotation PDF by stamping dynamic text
 directly onto the blank template.
 
 Strategy:
@@ -48,7 +48,7 @@ def build_quote_pdf(
     rate: str,
     exec_name: str = "",
 ) -> None:
-    """Stamp filled-in fields onto the Mcube quote template."""
+    """Stamp filled-in fields onto the Titans quote template."""
     from reportlab.pdfgen import canvas as rl_canvas
     from reportlab.lib import colors
     from pypdf import PdfReader, PdfWriter

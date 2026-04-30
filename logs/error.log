@@ -1,0 +1,1164 @@
+[2026-04-05 16:31:35 +0530] [30591] [INFO] Starting gunicorn 22.0.0
+[2026-04-05 16:31:35 +0530] [30591] [INFO] Listening at: http://127.0.0.1:5003 (30591)
+[2026-04-05 16:31:35 +0530] [30591] [INFO] Using worker: sync
+[2026-04-05 16:31:35 +0530] [30592] [INFO] Booting worker with pid: 30592
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 18:00 IST  (UTC 12:30)  |  Owner: set ✅
+🔄 Syncing scheduler with database (with stagger)...
+📭  No follow-up jobs currently scheduled
+✅ Scheduler sync complete
+📭  No follow-up jobs currently scheduled
+[2026-04-05 16:48:06 +0530] [30591] [INFO] Handling signal: hup
+[2026-04-05 16:48:06 +0530] [30591] [INFO] Hang up: Master
+[2026-04-05 16:48:06 +0530] [30591] [ERROR] Worker (pid:30592) was sent SIGHUP!
+[2026-04-05 16:48:06 +0530] [31075] [INFO] Booting worker with pid: 31075
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 18:00 IST  (UTC 12:30)  |  Owner: set ✅
+🔄 Syncing scheduler with database (with stagger)...
+📭  No follow-up jobs currently scheduled
+✅ Scheduler sync complete
+📭  No follow-up jobs currently scheduled
+[2026-04-05 19:05:14 +0530] [8419] [INFO] Starting gunicorn 22.0.0
+[2026-04-05 19:05:15 +0530] [8419] [INFO] Listening at: http://127.0.0.1:5003 (8419)
+[2026-04-05 19:05:15 +0530] [8419] [INFO] Using worker: sync
+[2026-04-05 19:05:15 +0530] [8420] [INFO] Booting worker with pid: 8420
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 19:06 IST  (UTC 13:36)  |  Owner: set ✅
+🔄 Syncing scheduler with database (with stagger)...
+📭  No follow-up jobs currently scheduled
+✅ Scheduler sync complete
+📭  No follow-up jobs currently scheduled
+⏰  APScheduler fired daily digest at 19:06 IST
+📅  Running daily digest for 05 Apr 2026 07:06 PM IST
+📋  Found 1 lead(s) today
+👥  Found 2 exec(s) total
+⚠️  Calculated 8 total overdue leads
+  ✅ Exec digest → Akash B (5457824226), 1 leads today, 8 overdue
+  ✅ Owner digest → chat_id=5457824226, 1 total lead(s)
+✅  Daily digest complete — 1 exec(s) + owner
+[2026-04-05 19:07:50 +0530] [8419] [INFO] Handling signal: int
+[2026-04-05 19:07:50 +0530] [8420] [INFO] Worker exiting (pid: 8420)
+[2026-04-05 19:07:50 +0530] [8419] [INFO] Shutting down: Master
+[2026-04-05 19:08:04 +0530] [8524] [INFO] Starting gunicorn 22.0.0
+[2026-04-05 19:08:04 +0530] [8524] [INFO] Listening at: http://127.0.0.1:5003 (8524)
+[2026-04-05 19:08:04 +0530] [8524] [INFO] Using worker: sync
+[2026-04-05 19:08:04 +0530] [8525] [INFO] Booting worker with pid: 8525
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 19:06 IST  (UTC 13:36)  |  Owner: set ✅
+🔄 Syncing scheduler with database (with stagger)...
+📭  No follow-up jobs currently scheduled
+✅ Scheduler sync complete
+📭  No follow-up jobs currently scheduled
+[2026-04-05 19:08:08 +0530] [8524] [INFO] Handling signal: int
+[2026-04-05 19:08:08 +0530] [8525] [INFO] Worker exiting (pid: 8525)
+[2026-04-05 19:08:08 +0530] [8524] [INFO] Shutting down: Master
+[2026-04-05 19:08:18 +0530] [8589] [INFO] Starting gunicorn 22.0.0
+[2026-04-05 19:08:18 +0530] [8589] [INFO] Listening at: http://127.0.0.1:5003 (8589)
+[2026-04-05 19:08:18 +0530] [8589] [INFO] Using worker: sync
+[2026-04-05 19:08:18 +0530] [8590] [INFO] Booting worker with pid: 8590
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 19:09 IST  (UTC 13:39)  |  Owner: set ✅
+🔄 Syncing scheduler with database (with stagger)...
+📭  No follow-up jobs currently scheduled
+✅ Scheduler sync complete
+📭  No follow-up jobs currently scheduled
+⏰  APScheduler fired daily digest at 19:09 IST
+📅  Running daily digest for 05 Apr 2026 07:09 PM IST
+📋  Found 0 lead(s) today
+👥  Found 0 exec(s) total
+⚠️  Calculated 0 total overdue leads
+  ✅ Owner digest → chat_id=5457824226, 0 total lead(s)
+✅  Daily digest complete — 0 exec(s) + owner
+[2026-04-05 19:10:15 +0530] [8589] [INFO] Handling signal: int
+[2026-04-05 19:10:15 +0530] [8590] [INFO] Worker exiting (pid: 8590)
+[2026-04-05 19:10:16 +0530] [8589] [INFO] Shutting down: Master
+[2026-04-07 14:20:15 +0530] [34123] [INFO] Starting gunicorn 22.0.0
+[2026-04-07 14:20:15 +0530] [34123] [INFO] Listening at: http://127.0.0.1:5003 (34123)
+[2026-04-07 14:20:15 +0530] [34123] [INFO] Using worker: sync
+[2026-04-07 14:20:15 +0530] [34130] [INFO] Booting worker with pid: 34130
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 18:00 IST  (UTC 12:30)  |  Owner: set ✅
+🔄 Syncing scheduler with database...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+📅 [DATE-DRIVEN] Scheduled lead #15 at 07 Apr 14:22 IST
+✅ Lead #15 saved — Akash | Foundation | White
+✅ Sent lead #15 & cleared next_followup_date
+📅 [DATE-DRIVEN] Scheduled lead #15 at 07 Apr 14:23 IST
+✏️ Lead #15 updated by Akash B (5457824226)
+✅ Sent lead #15 & cleared next_followup_date
+[2026-04-07 14:29:22 +0530] [34123] [INFO] Handling signal: int
+[2026-04-07 14:29:22 +0530] [34130] [INFO] Worker exiting (pid: 34130)
+[2026-04-07 14:29:23 +0530] [34123] [INFO] Shutting down: Master
+[2026-04-07 14:29:24 +0530] [34492] [INFO] Starting gunicorn 22.0.0
+[2026-04-07 14:29:24 +0530] [34492] [INFO] Listening at: http://127.0.0.1:5003 (34492)
+[2026-04-07 14:29:24 +0530] [34492] [INFO] Using worker: sync
+[2026-04-07 14:29:24 +0530] [34493] [INFO] Booting worker with pid: 34493
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 18:00 IST  (UTC 12:30)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+📅 Scheduled lead #15 at 07 Apr 14:30 IST
+✏️ Lead #15 updated by Akash B (5457824226)
+✅ Sent lead #15 & cleared next_followup_date
+[2026-04-07 14:39:53 +0530] [34492] [INFO] Handling signal: int
+[2026-04-07 14:39:53 +0530] [34493] [INFO] Worker exiting (pid: 34493)
+[2026-04-07 14:39:53 +0530] [34492] [INFO] Shutting down: Master
+[2026-04-07 14:39:54 +0530] [34898] [INFO] Starting gunicorn 22.0.0
+[2026-04-07 14:39:54 +0530] [34898] [INFO] Listening at: http://127.0.0.1:5003 (34898)
+[2026-04-07 14:39:54 +0530] [34898] [INFO] Using worker: sync
+[2026-04-07 14:39:54 +0530] [34903] [INFO] Booting worker with pid: 34903
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 18:00 IST  (UTC 12:30)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+📅 Scheduled lead #15 at 07 Apr 14:41 IST
+✏️ Lead #15 updated by Akash B (5457824226)
+✅ Sent lead #15
+[2026-04-07 14:41:38 +0530] [34898] [INFO] Handling signal: int
+[2026-04-07 14:41:38 +0530] [34903] [INFO] Worker exiting (pid: 34903)
+[2026-04-07 14:41:39 +0530] [34898] [INFO] Shutting down: Master
+[2026-04-07 14:55:01 +0530] [35367] [INFO] Starting gunicorn 22.0.0
+[2026-04-07 14:55:01 +0530] [35367] [INFO] Listening at: http://127.0.0.1:5003 (35367)
+[2026-04-07 14:55:01 +0530] [35367] [INFO] Using worker: sync
+[2026-04-07 14:55:01 +0530] [35368] [INFO] Booting worker with pid: 35368
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 18:00 IST  (UTC 12:30)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+📅 Scheduled lead #16 at 07 Apr 14:58 IST
+✅ Lead #16 saved — Akash | Foundation | White
+[2026-04-07 14:57:26 +0530] [35367] [INFO] Handling signal: winch
+[2026-04-07 14:57:27 +0530] [35367] [INFO] Handling signal: winch
+✅ Sent lead #16
+📅 Scheduled lead #16 at 07 Apr 14:59 IST
+✏️ Lead #16 updated by Akash B (5457824226)
+✅ Sent lead #16
+[2026-04-07 14:59:21 +0530] [35367] [INFO] Handling signal: int
+[2026-04-07 14:59:21 +0530] [35368] [INFO] Worker exiting (pid: 35368)
+[2026-04-07 14:59:21 +0530] [35367] [INFO] Shutting down: Master
+[2026-04-25 19:54:29 +0530] [35764] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 19:54:29 +0530] [35764] [INFO] Listening at: http://127.0.0.1:5003 (35764)
+[2026-04-25 19:54:29 +0530] [35764] [INFO] Using worker: sync
+[2026-04-25 19:54:29 +0530] [35765] [INFO] Booting worker with pid: 35765
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-25 19:55:02 +0530] [35764] [INFO] Handling signal: int
+[2026-04-25 19:55:02 +0530] [35765] [INFO] Worker exiting (pid: 35765)
+[2026-04-25 19:55:02 +0530] [35764] [INFO] Shutting down: Master
+[2026-04-25 19:55:23 +0530] [35916] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 19:55:23 +0530] [35916] [INFO] Listening at: http://127.0.0.1:5003 (35916)
+[2026-04-25 19:55:23 +0530] [35916] [INFO] Using worker: sync
+[2026-04-25 19:55:23 +0530] [35917] [INFO] Booting worker with pid: 35917
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-25 19:55:44 +0530] [35916] [INFO] Handling signal: int
+[2026-04-25 19:55:44 +0530] [35917] [INFO] Worker exiting (pid: 35917)
+[2026-04-25 19:55:44 +0530] [35916] [INFO] Shutting down: Master
+[2026-04-25 19:56:22 +0530] [36054] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 19:56:22 +0530] [36054] [INFO] Listening at: http://127.0.0.1:5003 (36054)
+[2026-04-25 19:56:22 +0530] [36054] [INFO] Using worker: sync
+[2026-04-25 19:56:22 +0530] [36055] [INFO] Booting worker with pid: 36055
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-25 19:56:58 +0530] [36054] [INFO] Handling signal: int
+[2026-04-25 19:56:58 +0530] [36055] [INFO] Worker exiting (pid: 36055)
+[2026-04-25 19:56:58 +0530] [36054] [INFO] Shutting down: Master
+[2026-04-25 19:57:23 +0530] [36165] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 19:57:23 +0530] [36165] [INFO] Listening at: http://127.0.0.1:5003 (36165)
+[2026-04-25 19:57:23 +0530] [36165] [INFO] Using worker: sync
+[2026-04-25 19:57:23 +0530] [36166] [INFO] Booting worker with pid: 36166
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-25 19:57:47 +0530] [36165] [INFO] Handling signal: int
+[2026-04-25 19:57:47 +0530] [36166] [INFO] Worker exiting (pid: 36166)
+[2026-04-25 19:57:48 +0530] [36165] [INFO] Shutting down: Master
+[2026-04-25 19:59:08 +0530] [36426] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 19:59:08 +0530] [36426] [INFO] Listening at: http://127.0.0.1:5003 (36426)
+[2026-04-25 19:59:08 +0530] [36426] [INFO] Using worker: sync
+[2026-04-25 19:59:08 +0530] [36427] [INFO] Booting worker with pid: 36427
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-25 19:59:53 +0530] [36426] [INFO] Handling signal: int
+[2026-04-25 19:59:53 +0530] [36427] [INFO] Worker exiting (pid: 36427)
+[2026-04-25 19:59:54 +0530] [36426] [INFO] Shutting down: Master
+[2026-04-25 20:00:05 +0530] [37288] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 20:00:05 +0530] [37288] [INFO] Listening at: http://127.0.0.1:5003 (37288)
+[2026-04-25 20:00:05 +0530] [37288] [INFO] Using worker: sync
+[2026-04-25 20:00:05 +0530] [37297] [INFO] Booting worker with pid: 37297
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-25 20:06:36 +0530] [37288] [INFO] Handling signal: int
+[2026-04-25 20:06:37 +0530] [37297] [INFO] Worker exiting (pid: 37297)
+[2026-04-25 20:06:37 +0530] [37288] [INFO] Shutting down: Master
+[2026-04-25 20:06:39 +0530] [37625] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 20:06:39 +0530] [37625] [INFO] Listening at: http://127.0.0.1:5003 (37625)
+[2026-04-25 20:06:39 +0530] [37625] [INFO] Using worker: sync
+[2026-04-25 20:06:39 +0530] [37633] [INFO] Booting worker with pid: 37633
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+📅 Scheduled lead #16 at 25 Apr 23:07 IST
+✏️ Lead #16 updated by Akash B (5457824226)
+[2026-04-25 20:07:50 +0530] [37625] [INFO] Handling signal: int
+[2026-04-25 20:07:50 +0530] [37633] [INFO] Worker exiting (pid: 37633)
+[2026-04-25 20:07:50 +0530] [37625] [INFO] Shutting down: Master
+[2026-04-25 20:08:37 +0530] [37797] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 20:08:37 +0530] [37797] [INFO] Listening at: http://127.0.0.1:5003 (37797)
+[2026-04-25 20:08:37 +0530] [37797] [INFO] Using worker: sync
+[2026-04-25 20:08:37 +0530] [37798] [INFO] Booting worker with pid: 37798
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 25 Apr 23:07 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 25 Apr 23:07 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 25 Apr 23:07 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-25 20:14:26 +0530] [37797] [INFO] Handling signal: int
+[2026-04-25 20:14:26 +0530] [37798] [INFO] Worker exiting (pid: 37798)
+[2026-04-25 20:14:26 +0530] [37797] [INFO] Shutting down: Master
+[2026-04-25 20:17:14 +0530] [38001] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 20:17:14 +0530] [38001] [INFO] Listening at: http://127.0.0.1:5003 (38001)
+[2026-04-25 20:17:14 +0530] [38001] [INFO] Using worker: sync
+[2026-04-25 20:17:14 +0530] [38002] [INFO] Booting worker with pid: 38002
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 25 Apr 23:07 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 25 Apr 23:07 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 25 Apr 23:07 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-25 20:17:30 +0530] [38001] [INFO] Handling signal: int
+[2026-04-25 20:17:30 +0530] [38002] [INFO] Worker exiting (pid: 38002)
+[2026-04-25 20:17:30 +0530] [38001] [INFO] Shutting down: Master
+[2026-04-25 20:24:29 +0530] [38719] [INFO] Starting gunicorn 22.0.0
+[2026-04-25 20:24:29 +0530] [38719] [INFO] Listening at: http://127.0.0.1:5003 (38719)
+[2026-04-25 20:24:29 +0530] [38719] [INFO] Using worker: sync
+[2026-04-25 20:24:29 +0530] [38720] [INFO] Booting worker with pid: 38720
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 25 Apr 23:07 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 25 Apr 23:07 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 25 Apr 23:07 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-25 20:26:14 +0530] [38719] [INFO] Handling signal: int
+[2026-04-25 20:26:14 +0530] [38720] [INFO] Worker exiting (pid: 38720)
+[2026-04-25 20:26:14 +0530] [38719] [INFO] Shutting down: Master
+[2026-04-26 18:35:26 +0530] [7402] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 18:35:26 +0530] [7402] [INFO] Listening at: http://127.0.0.1:5003 (7402)
+[2026-04-26 18:35:26 +0530] [7402] [INFO] Using worker: sync
+[2026-04-26 18:35:26 +0530] [7409] [INFO] Booting worker with pid: 7409
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 26 Apr 18:35 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 26 Apr 18:35 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 26 Apr 18:35 IST
+────────────────────────────────────────────────────────────
+
+✅ Sent lead #16
+[2026-04-26 18:36:28 +0530] [7402] [INFO] Handling signal: int
+[2026-04-26 18:36:28 +0530] [7409] [INFO] Worker exiting (pid: 7409)
+[2026-04-26 18:36:28 +0530] [7402] [INFO] Shutting down: Master
+[2026-04-26 18:39:29 +0530] [7609] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 18:39:29 +0530] [7609] [INFO] Listening at: http://127.0.0.1:5003 (7609)
+[2026-04-26 18:39:29 +0530] [7609] [INFO] Using worker: sync
+[2026-04-26 18:39:29 +0530] [7610] [INFO] Booting worker with pid: 7610
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 18:46:43 +0530] [7609] [INFO] Handling signal: int
+[2026-04-26 18:46:43 +0530] [7610] [INFO] Worker exiting (pid: 7610)
+[2026-04-26 18:46:44 +0530] [7609] [INFO] Shutting down: Master
+[2026-04-26 18:47:38 +0530] [13687] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 18:47:38 +0530] [13687] [INFO] Listening at: http://127.0.0.1:5003 (13687)
+[2026-04-26 18:47:38 +0530] [13687] [INFO] Using worker: sync
+[2026-04-26 18:47:38 +0530] [13695] [INFO] Booting worker with pid: 13695
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 19:02:50 +0530] [13687] [INFO] Handling signal: int
+[2026-04-26 19:02:51 +0530] [13695] [INFO] Worker exiting (pid: 13695)
+[2026-04-26 19:02:51 +0530] [13687] [INFO] Shutting down: Master
+[2026-04-26 19:02:53 +0530] [20131] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:02:53 +0530] [20131] [INFO] Listening at: http://127.0.0.1:5003 (20131)
+[2026-04-26 19:02:53 +0530] [20131] [INFO] Using worker: sync
+[2026-04-26 19:02:53 +0530] [20139] [INFO] Booting worker with pid: 20139
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 19:04:05 +0530] [20131] [INFO] Handling signal: int
+[2026-04-26 19:04:05 +0530] [20139] [INFO] Worker exiting (pid: 20139)
+[2026-04-26 19:04:05 +0530] [20131] [INFO] Shutting down: Master
+[2026-04-26 19:06:37 +0530] [20336] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:06:37 +0530] [20336] [INFO] Listening at: http://127.0.0.1:5003 (20336)
+[2026-04-26 19:06:37 +0530] [20336] [INFO] Using worker: sync
+[2026-04-26 19:06:37 +0530] [20342] [INFO] Booting worker with pid: 20342
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 19:14:30 +0530] [20336] [INFO] Handling signal: int
+[2026-04-26 19:14:30 +0530] [20342] [INFO] Worker exiting (pid: 20342)
+[2026-04-26 19:14:30 +0530] [20336] [INFO] Shutting down: Master
+[2026-04-26 19:14:31 +0530] [20564] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:14:31 +0530] [20564] [INFO] Listening at: http://127.0.0.1:5003 (20564)
+[2026-04-26 19:14:31 +0530] [20564] [INFO] Using worker: sync
+[2026-04-26 19:14:31 +0530] [20565] [INFO] Booting worker with pid: 20565
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 19:15:09 +0530] [20564] [INFO] Handling signal: int
+[2026-04-26 19:15:10 +0530] [20565] [INFO] Worker exiting (pid: 20565)
+[2026-04-26 19:15:10 +0530] [20564] [INFO] Shutting down: Master
+[2026-04-26 19:16:27 +0530] [20732] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:16:27 +0530] [20732] [INFO] Listening at: http://127.0.0.1:5003 (20732)
+[2026-04-26 19:16:27 +0530] [20732] [INFO] Using worker: sync
+[2026-04-26 19:16:27 +0530] [20733] [INFO] Booting worker with pid: 20733
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+📅 Scheduled lead #16 at 26 Apr 19:16 IST
+✏️ Lead #16 updated by Akash B (5457824226)
+[2026-04-26 19:16:36 +0530] [20732] [INFO] Handling signal: int
+[2026-04-26 19:16:36 +0530] [20733] [INFO] Worker exiting (pid: 20733)
+[2026-04-26 19:16:36 +0530] [20732] [INFO] Shutting down: Master
+[2026-04-26 19:17:36 +0530] [20939] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:17:36 +0530] [20939] [INFO] Listening at: http://127.0.0.1:5003 (20939)
+[2026-04-26 19:17:36 +0530] [20939] [INFO] Using worker: sync
+[2026-04-26 19:17:36 +0530] [20940] [INFO] Booting worker with pid: 20940
+[2026-04-26 19:17:39 +0530] [20939] [INFO] Handling signal: int
+[2026-04-26 19:17:39 +0530] [20940] [INFO] Worker exiting (pid: 20940)
+[2026-04-26 19:17:39 +0530] [20939] [INFO] Shutting down: Master
+[2026-04-26 19:27:02 +0530] [21238] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:27:02 +0530] [21238] [INFO] Listening at: http://127.0.0.1:5003 (21238)
+[2026-04-26 19:27:02 +0530] [21238] [INFO] Using worker: sync
+[2026-04-26 19:27:02 +0530] [21239] [INFO] Booting worker with pid: 21239
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 26 Apr 19:27 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 26 Apr 19:27 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 26 Apr 19:27 IST
+────────────────────────────────────────────────────────────
+
+✅ Sent lead #16
+[2026-04-26 19:33:21 +0530] [21238] [INFO] Handling signal: int
+[2026-04-26 19:33:22 +0530] [21239] [INFO] Worker exiting (pid: 21239)
+[2026-04-26 19:33:22 +0530] [21238] [INFO] Shutting down: Master
+[2026-04-26 19:33:23 +0530] [21470] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:33:23 +0530] [21470] [INFO] Listening at: http://127.0.0.1:5003 (21470)
+[2026-04-26 19:33:23 +0530] [21470] [INFO] Using worker: sync
+[2026-04-26 19:33:23 +0530] [21471] [INFO] Booting worker with pid: 21471
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 19:34:42 +0530] [21470] [INFO] Handling signal: int
+[2026-04-26 19:34:42 +0530] [21471] [INFO] Worker exiting (pid: 21471)
+[2026-04-26 19:34:42 +0530] [21470] [INFO] Shutting down: Master
+[2026-04-26 19:37:56 +0530] [21783] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:37:56 +0530] [21783] [INFO] Listening at: http://127.0.0.1:5003 (21783)
+[2026-04-26 19:37:56 +0530] [21783] [INFO] Using worker: sync
+[2026-04-26 19:37:56 +0530] [21784] [INFO] Booting worker with pid: 21784
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 19:38:54 +0530] [21783] [INFO] Handling signal: int
+[2026-04-26 19:38:54 +0530] [21784] [INFO] Worker exiting (pid: 21784)
+[2026-04-26 19:38:54 +0530] [21783] [INFO] Shutting down: Master
+[2026-04-26 19:50:58 +0530] [22196] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:50:58 +0530] [22196] [INFO] Listening at: http://127.0.0.1:5003 (22196)
+[2026-04-26 19:50:58 +0530] [22196] [INFO] Using worker: sync
+[2026-04-26 19:50:58 +0530] [22197] [INFO] Booting worker with pid: 22197
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+[2026-04-26 19:51:15 +0530] [22196] [INFO] Handling signal: int
+[2026-04-26 19:51:15 +0530] [22197] [INFO] Worker exiting (pid: 22197)
+[2026-04-26 19:51:16 +0530] [22196] [INFO] Shutting down: Master
+[2026-04-26 19:56:52 +0530] [22418] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 19:56:52 +0530] [22418] [INFO] Listening at: http://127.0.0.1:5003 (22418)
+[2026-04-26 19:56:52 +0530] [22418] [INFO] Using worker: sync
+[2026-04-26 19:56:52 +0530] [22419] [INFO] Booting worker with pid: 22419
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📭  No follow-up jobs scheduled
+📭  No follow-up jobs scheduled
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+✏️ Lead #16 updated by Akash B (5457824226)
+[2026-04-26 19:58:33 +0530] [22418] [INFO] Handling signal: int
+[2026-04-26 19:58:33 +0530] [22419] [INFO] Worker exiting (pid: 22419)
+[2026-04-26 19:58:33 +0530] [22418] [INFO] Shutting down: Master
+[2026-04-26 20:11:48 +0530] [23202] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:11:48 +0530] [23202] [INFO] Listening at: http://127.0.0.1:5003 (23202)
+[2026-04-26 20:11:48 +0530] [23202] [INFO] Using worker: sync
+[2026-04-26 20:11:48 +0530] [23203] [INFO] Booting worker with pid: 23203
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:13:06 +0530] [23202] [INFO] Handling signal: int
+[2026-04-26 20:13:06 +0530] [23203] [INFO] Worker exiting (pid: 23203)
+[2026-04-26 20:13:06 +0530] [23202] [INFO] Shutting down: Master
+[2026-04-26 20:13:07 +0530] [23469] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:13:07 +0530] [23469] [INFO] Listening at: http://127.0.0.1:5003 (23469)
+[2026-04-26 20:13:07 +0530] [23469] [INFO] Using worker: sync
+[2026-04-26 20:13:07 +0530] [23470] [INFO] Booting worker with pid: 23470
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:13:27 +0530] [23469] [INFO] Handling signal: int
+[2026-04-26 20:13:28 +0530] [23470] [INFO] Worker exiting (pid: 23470)
+[2026-04-26 20:13:28 +0530] [23469] [INFO] Shutting down: Master
+[2026-04-26 20:13:29 +0530] [23540] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:13:29 +0530] [23540] [INFO] Listening at: http://127.0.0.1:5003 (23540)
+[2026-04-26 20:13:29 +0530] [23540] [INFO] Using worker: sync
+[2026-04-26 20:13:29 +0530] [23541] [INFO] Booting worker with pid: 23541
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:13:37 +0530] [23540] [INFO] Handling signal: int
+[2026-04-26 20:13:37 +0530] [23541] [INFO] Worker exiting (pid: 23541)
+[2026-04-26 20:13:37 +0530] [23540] [INFO] Shutting down: Master
+[2026-04-26 20:14:01 +0530] [23642] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:14:01 +0530] [23642] [INFO] Listening at: http://127.0.0.1:5003 (23642)
+[2026-04-26 20:14:01 +0530] [23642] [INFO] Using worker: sync
+[2026-04-26 20:14:01 +0530] [23643] [INFO] Booting worker with pid: 23643
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:15:39 +0530] [23642] [INFO] Handling signal: int
+[2026-04-26 20:15:39 +0530] [23643] [INFO] Worker exiting (pid: 23643)
+[2026-04-26 20:15:39 +0530] [23642] [INFO] Shutting down: Master
+[2026-04-26 20:15:42 +0530] [23981] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:15:42 +0530] [23981] [INFO] Listening at: http://127.0.0.1:5003 (23981)
+[2026-04-26 20:15:42 +0530] [23981] [INFO] Using worker: sync
+[2026-04-26 20:15:42 +0530] [23982] [INFO] Booting worker with pid: 23982
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:17:40 +0530] [23981] [INFO] Handling signal: int
+[2026-04-26 20:17:40 +0530] [23982] [INFO] Worker exiting (pid: 23982)
+[2026-04-26 20:17:41 +0530] [23981] [INFO] Shutting down: Master
+[2026-04-26 20:17:42 +0530] [24240] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:17:42 +0530] [24240] [INFO] Listening at: http://127.0.0.1:5003 (24240)
+[2026-04-26 20:17:42 +0530] [24240] [INFO] Using worker: sync
+[2026-04-26 20:17:42 +0530] [24241] [INFO] Booting worker with pid: 24241
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:18:07 +0530] [24240] [INFO] Handling signal: int
+[2026-04-26 20:18:07 +0530] [24241] [INFO] Worker exiting (pid: 24241)
+[2026-04-26 20:18:07 +0530] [24240] [INFO] Shutting down: Master
+[2026-04-26 20:18:10 +0530] [24352] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:18:10 +0530] [24352] [INFO] Listening at: http://127.0.0.1:5003 (24352)
+[2026-04-26 20:18:10 +0530] [24352] [INFO] Using worker: sync
+[2026-04-26 20:18:10 +0530] [24353] [INFO] Booting worker with pid: 24353
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:18:40 +0530] [24352] [INFO] Handling signal: int
+[2026-04-26 20:18:40 +0530] [24353] [INFO] Worker exiting (pid: 24353)
+[2026-04-26 20:18:41 +0530] [24352] [INFO] Shutting down: Master
+[2026-04-26 20:19:07 +0530] [24475] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:19:07 +0530] [24475] [INFO] Listening at: http://127.0.0.1:5003 (24475)
+[2026-04-26 20:19:07 +0530] [24475] [INFO] Using worker: sync
+[2026-04-26 20:19:07 +0530] [24480] [INFO] Booting worker with pid: 24480
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:19:19 +0530] [24475] [INFO] Handling signal: int
+[2026-04-26 20:19:19 +0530] [24480] [INFO] Worker exiting (pid: 24480)
+[2026-04-26 20:19:19 +0530] [24475] [INFO] Shutting down: Master
+[2026-04-26 20:19:34 +0530] [24593] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:19:34 +0530] [24593] [INFO] Listening at: http://127.0.0.1:5003 (24593)
+[2026-04-26 20:19:34 +0530] [24593] [INFO] Using worker: sync
+[2026-04-26 20:19:34 +0530] [24594] [INFO] Booting worker with pid: 24594
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:19:51 +0530] [24593] [INFO] Handling signal: int
+[2026-04-26 20:19:51 +0530] [24594] [INFO] Worker exiting (pid: 24594)
+[2026-04-26 20:19:52 +0530] [24593] [INFO] Shutting down: Master
+[2026-04-26 20:19:53 +0530] [24665] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:19:53 +0530] [24665] [INFO] Listening at: http://127.0.0.1:5003 (24665)
+[2026-04-26 20:19:53 +0530] [24665] [INFO] Using worker: sync
+[2026-04-26 20:19:53 +0530] [24666] [INFO] Booting worker with pid: 24666
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:20:12 +0530] [24764] [INFO] Starting gunicorn 22.0.0
+
+Error: Already running on PID 24665 (or pid file 'logs/gunicorn.pid' is stale)
+
+[2026-04-26 20:20:24 +0530] [24808] [INFO] Starting gunicorn 22.0.0
+
+Error: Already running on PID 24665 (or pid file 'logs/gunicorn.pid' is stale)
+
+[2026-04-26 20:21:54 +0530] [24933] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:21:54 +0530] [24933] [INFO] Listening at: http://127.0.0.1:5003 (24933)
+[2026-04-26 20:21:54 +0530] [24933] [INFO] Using worker: sync
+[2026-04-26 20:21:54 +0530] [24944] [INFO] Booting worker with pid: 24944
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:27:06 +0530] [24933] [INFO] Handling signal: int
+[2026-04-26 20:27:06 +0530] [24944] [INFO] Worker exiting (pid: 24944)
+[2026-04-26 20:27:07 +0530] [24933] [INFO] Shutting down: Master
+[2026-04-26 20:27:08 +0530] [26203] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:27:08 +0530] [26203] [INFO] Listening at: http://127.0.0.1:5003 (26203)
+[2026-04-26 20:27:08 +0530] [26203] [INFO] Using worker: sync
+[2026-04-26 20:27:08 +0530] [26205] [INFO] Booting worker with pid: 26205
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:27:36 +0530] [26203] [INFO] Handling signal: int
+[2026-04-26 20:27:36 +0530] [26205] [INFO] Worker exiting (pid: 26205)
+[2026-04-26 20:27:36 +0530] [26203] [INFO] Shutting down: Master
+[2026-04-26 20:28:01 +0530] [26330] [INFO] Starting gunicorn 22.0.0
+[2026-04-26 20:28:01 +0530] [26330] [INFO] Listening at: http://127.0.0.1:5003 (26330)
+[2026-04-26 20:28:01 +0530] [26330] [INFO] Using worker: sync
+[2026-04-26 20:28:01 +0530] [26331] [INFO] Booting worker with pid: 26331
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 27 Apr 09:00 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 27 Apr 09:00 IST
+────────────────────────────────────────────────────────────
+
+[2026-04-26 20:28:17 +0530] [26330] [INFO] Handling signal: int
+[2026-04-26 20:28:17 +0530] [26331] [INFO] Worker exiting (pid: 26331)
+[2026-04-26 20:28:17 +0530] [26330] [INFO] Shutting down: Master
+[2026-04-28 17:23:58 +0530] [6750] [INFO] Starting gunicorn 22.0.0
+[2026-04-28 17:23:58 +0530] [6750] [INFO] Listening at: http://127.0.0.1:5003 (6750)
+[2026-04-28 17:23:58 +0530] [6750] [INFO] Using worker: sync
+[2026-04-28 17:23:58 +0530] [6772] [INFO] Booting worker with pid: 6772
+[2026-04-28 17:24:15 +0530] [6772] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 276, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/arbiter.py", line 609, in spawn_worker
+    worker.init_process()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 134, in init_process
+    self.load_wsgi()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
+    self.wsgi = self.app.wsgi()
+                ^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+                    ^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+    return self.load_wsgiapp()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+    return util.import_app(self.app_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/util.py", line 371, in import_app
+    mod = importlib.import_module(module)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/app.py", line 85, in <module>
+    asyncio.run_coroutine_threadsafe(init_bot(), loop).result(timeout=15)
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/app.py", line 79, in init_bot
+    await telegram_app.initialize()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 498, in initialize
+    await self.bot.initialize()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 299, in initialize
+    await super().initialize()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 772, in initialize
+    await self.get_me()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 1906, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 904, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 618, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 353, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 647, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 342, in _request_wrapper
+    raise exc
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 332, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 293, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+[2026-04-28 17:24:16 +0530] [6772] [INFO] Worker exiting (pid: 6772)
+[2026-04-28 17:24:17 +0530] [6750] [ERROR] Worker (pid:6772) exited with code 3
+[2026-04-28 17:24:17 +0530] [6750] [ERROR] Shutting down: Master
+[2026-04-28 17:24:17 +0530] [6750] [ERROR] Reason: Worker failed to boot.
+[2026-04-28 17:24:51 +0530] [7461] [INFO] Starting gunicorn 22.0.0
+[2026-04-28 17:24:51 +0530] [7461] [INFO] Listening at: http://127.0.0.1:5003 (7461)
+[2026-04-28 17:24:51 +0530] [7461] [INFO] Using worker: sync
+[2026-04-28 17:24:51 +0530] [7477] [INFO] Booting worker with pid: 7477
+✅ Telegram bot initialized & webhook set
+📅  Daily digest registered — 11:23 IST  (UTC 05:53)  |  Owner: set ✅
+🔄 Syncing scheduler with database (Smart Stagger)...
+📅 Scheduled lead #16 at 28 Apr 17:25 IST
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 28 Apr 17:25 IST
+────────────────────────────────────────────────────────────
+
+
+────────────────────────────────────────────────────────────
+📅  SCHEDULED FOLLOW-UPS (1)
+────────────────────────────────────────────────────────────
+  Lead # 16 | Akash                | 🕐 28 Apr 17:25 IST
+────────────────────────────────────────────────────────────
+
+✅ Sent lead #16
+📅 Scheduled lead #17 at 28 Apr 17:29 IST
+✅ Lead #17 saved — Promoflix | Foundation | White + colour
+📅 Scheduled lead #17 at 28 Apr 17:29 IST
+🔀 Lead #17 reassigned by Admin: Akash B → Ajay Jackson
+❌ Telegram send error:
+Traceback (most recent call last):
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/app.py", line 959, in _send_safe
+    await telegram_app.bot.send_message(
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 2893, in send_message
+    return await super().send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 1024, in send_message
+    return await self._send_message(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 608, in _send_message
+    result = await super()._send_message(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 740, in _send_message
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 618, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 353, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 647, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 381, in _request_wrapper
+    raise BadRequest(message)
+telegram.error.BadRequest: Chat not found
+
+📅 Scheduled lead #17 at 28 Apr 17:29 IST
+🔀 Lead #17 reassigned by Admin: Ajay Jackson → Akash B
+✅ Notification sent to chat 5457824226 for lead re-assignment.
+✅ Sent lead #17
+📅  Running daily digest for 28 Apr 2026 05:31 PM IST
+📋  Found 1 lead(s) today
+👥  Found 2 exec(s) total
+⚠️  Calculated 9 total overdue leads
+  ✅ Exec digest → Akash B (5457824226), 1 leads today, 9 overdue
+  ✅ Owner digest → chat_id=5457824226, 1 total lead(s)
+✅  Daily digest complete — 1 exec(s) + owner
+[2026-04-28 17:54:22 +0530] [7461] [INFO] Handling signal: winch
+[2026-04-28 17:54:24 +0530] [7461] [INFO] Handling signal: hup
+[2026-04-28 17:54:24 +0530] [7461] [INFO] Hang up: Master
+[2026-04-28 17:54:24 +0530] [7461] [ERROR] Worker (pid:7477) was sent SIGHUP!
+[2026-04-28 17:54:24 +0530] [8925] [INFO] Booting worker with pid: 8925
+[2026-04-28 17:54:45 +0530] [8925] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 156, in _connect
+    stream = await stream.start_tls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 67, in start_tls
+    with map_exceptions(exc_map):
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 276, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/arbiter.py", line 609, in spawn_worker
+    worker.init_process()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 134, in init_process
+    self.load_wsgi()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 146, in load_wsgi
+    self.wsgi = self.app.wsgi()
+                ^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+                    ^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/app/wsgiapp.py", line 58, in load
+    return self.load_wsgiapp()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/app/wsgiapp.py", line 48, in load_wsgiapp
+    return util.import_app(self.app_uri)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/gunicorn/util.py", line 371, in import_app
+    mod = importlib.import_module(module)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/app.py", line 85, in <module>
+    asyncio.run_coroutine_threadsafe(init_bot(), loop).result(timeout=15)
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/app.py", line 79, in init_bot
+    await telegram_app.initialize()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_application.py", line 498, in initialize
+    await self.bot.initialize()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 299, in initialize
+    await super().initialize()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 772, in initialize
+    await self.get_me()
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 1906, in get_me
+    return await super().get_me(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 904, in get_me
+    result = await self._post(
+             ^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 618, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/ext/_extbot.py", line 353, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/_bot.py", line 647, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 342, in _request_wrapper
+    raise exc
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 332, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/akash-b/DataDrive/TECH_B/Titans_Fin/venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 293, in do_request
+    raise TimedOut from err
+telegram.error.TimedOut: Timed out
+[2026-04-28 17:54:46 +0530] [8925] [INFO] Worker exiting (pid: 8925)
+[2026-04-28 17:54:46 +0530] [7461] [ERROR] Worker (pid:8925) exited with code 3
+[2026-04-28 17:54:46 +0530] [7461] [ERROR] Shutting down: Master
+[2026-04-28 17:54:46 +0530] [7461] [ERROR] Reason: Worker failed to boot.

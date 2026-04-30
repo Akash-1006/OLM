@@ -48,6 +48,22 @@ def _today_utc_range():
     )
 
 
+def _is_overdue(l) -> bool:
+    """Helper to check if a lead is overdue with 6:30 PM IST grace period."""
+    if not l.last_followup_at or (l.site_status in ("Won", "Lost")):
+        return False
+    # Check for update AFTER reminder
+    if l.last_user_update_at and l.last_user_update_at >= l.last_followup_at:
+        return False
+    
+    # Grace: 6:30 PM IST of the day the reminder was sent
+    lfa_ist = l.last_followup_at.replace(tzinfo=timezone.utc).astimezone(IST)
+    deadline = lfa_ist.replace(hour=18, minute=30, second=0, microsecond=0)
+    now_ist  = datetime.now(timezone.utc).astimezone(IST)
+    
+    return now_ist > deadline
+
+
 # ── Message builders ───────────────────────────────────────────────────────────
 
 def _lead_line(l) -> str:
@@ -67,11 +83,11 @@ def _escape(text: str) -> str:
     return ''.join(f'\\{c}' if c in special else c for c in str(text))
 
 
-def _build_exec_digest(exec_name: str, leads: list) -> str:
+def _build_exec_digest(exec_name: str, leads: list, overdue_count: int = 0) -> str:
     date_str  = _ist_now().strftime("%d %b %Y")
     safe_name = _escape(exec_name)
 
-    if not leads:
+    if not leads and overdue_count == 0:
         return (
             f"📋 *Daily Lead Summary — {date_str}*\n"
             f"Hi {safe_name}\\! No leads submitted by you today\\.\n"
@@ -82,10 +98,13 @@ def _build_exec_digest(exec_name: str, leads: list) -> str:
     lost  = sum(1 for l in leads if l.site_status == "Lost")
     prog  = len(leads) - won - lost
 
+    overdue_line = f"⚠️ Overdue Follow\\-ups: *{overdue_count}*\n" if overdue_count > 0 else ""
+
     lines = [
         f"📋 *Daily Lead Summary — {date_str}*",
-        f"Hi *{safe_name}*\\! Here's your activity today:\n",
-        f"📊 Total: *{len(leads)}*   ✅ Won: {won}   ❌ Lost: {lost}   ⏳ In Progress: {prog}\n",
+        f"Hi *{safe_name}*\\! Here's your status update:\n",
+        f"📊 Today's Total: *{len(leads)}*   ✅ Won: {won}   ❌ Lost: {lost}\n",
+        overdue_line,
         "━━━━━━━━━━━━━━━━━━━━━━━━",
     ]
     for l in leads:
@@ -103,13 +122,15 @@ def _build_exec_digest(exec_name: str, leads: list) -> str:
     return "\n".join(lines)
 
 
-def _build_owner_digest(leads: list) -> str:
+def _build_owner_digest(leads: list, overdue_by_exec: dict) -> str:
     date_str = _ist_now().strftime("%d %b %Y")
 
-    if not leads:
+    total_overdue = sum(overdue_by_exec.values())
+
+    if not leads and total_overdue == 0:
         return (
-            f"📊 *Mcube Team Summary — {date_str}*\n"
-            f"No leads were submitted by the team today\\."
+            f"📊 *Titans Team Summary — {date_str}*\n"
+            f"No activity and no overdue leads today\\."
         )
 
     total = len(leads)
@@ -117,29 +138,48 @@ def _build_owner_digest(leads: list) -> str:
     lost  = sum(1 for l in leads if l.site_status == "Lost")
     prog  = total - won - lost
 
+    lines = [
+        f"📊 *Titans Team Summary — {date_str}*\n",
+        f"📈 Today's Leads: *{total}*",
+        f"✅ Won: {won}   ❌ Lost: {lost}   ⏳ In Progress: {prog}",
+        f"⚠️ Total Overdue: *{total_overdue}*\n",
+        "━━━━━━━━━━━━━━━━━━━━━━━━",
+    ]
+
+    # Combine all unique exec names from both sets
     by_exec: dict[str, list] = {}
     for l in leads:
         name = l.sales_exec_name or f"Exec #{l.sales_exec_id}"
         by_exec.setdefault(name, []).append(l)
+    
+    # We also need to list execs who might have 0 leads but >0 overdue
+    from db import SessionLocal
+    from models.lead import Lead
+    s = SessionLocal()
+    exec_map = {row[0]: row[1] for row in s.query(Lead.sales_exec_id, Lead.sales_exec_name).filter(Lead.sales_exec_id.isnot(None)).group_by(Lead.sales_exec_id).all()}
+    s.close()
+    
+    all_exec_names = set(by_exec.keys()) | {exec_map.get(eid, f"Exec #{eid}") for eid in overdue_by_exec.keys()}
 
-    lines = [
-        f"📊 *Mcube Team Summary — {date_str}*\n",
-        f"📈 Total Leads Today: *{total}*",
-        f"✅ Won: {won}   ❌ Lost: {lost}   ⏳ In Progress: {prog}\n",
-        "━━━━━━━━━━━━━━━━━━━━━━━━",
-    ]
-
-    for exec_name, exec_leads in sorted(by_exec.items()):
+    for exec_name in sorted(all_exec_names):
+        exec_leads = by_exec.get(exec_name, [])
+        # Find eid for this name
+        eid = next((k for k, v in exec_map.items() if v == exec_name), None)
+        e_overdue = overdue_by_exec.get(eid, 0) if eid else 0
+        
         e_won  = sum(1 for l in exec_leads if l.site_status == "Won")
         e_lost = sum(1 for l in exec_leads if l.site_status == "Lost")
+        
+        overdue_tag = f" \\(⚠️ *{e_overdue} overdue*\\)" if e_overdue > 0 else ""
+        
         lines.append(
-            f"\n👤 *{_escape(exec_name)}*  —  {len(exec_leads)} lead{'s' if len(exec_leads)>1 else ''}"
+            f"\n👤 *{_escape(exec_name)}*{overdue_tag}  —  {len(exec_leads)} today"
             f"   \\(✅ {e_won}  ❌ {e_lost}\\)"
         )
         for l in exec_leads:
             lines.append(_lead_line(l))
 
-    lines.append("\n_Mcube M3 · Auto\\-generated daily digest_")
+    lines.append("\n_Titan · Auto\\-generated daily digest_")
     return "\n".join(lines)
 
 
@@ -221,19 +261,33 @@ def send_daily_digests(bot=None, loop=None):
             if l.sales_exec_id:
                 leads_by_exec.setdefault(l.sales_exec_id, []).append(l)
 
+        # ── Calculate Overdue totals per exec (across ALL active leads) ───────
+        all_active = session.query(Lead).filter(Lead.site_status.notin_(["Won", "Lost"])).all()
+        overdue_by_exec: dict[int, int] = {}
+        for l in all_active:
+            if l.sales_exec_id and _is_overdue(l):
+                overdue_by_exec[l.sales_exec_id] = overdue_by_exec.get(l.sales_exec_id, 0) + 1
+        print(f"⚠️  Calculated {sum(overdue_by_exec.values())} total overdue leads")
+
         # ── Per-exec personal digests (all execs, empty list if no leads today) ─
         sent_execs = 0
         for exec_id, exec_name in all_execs:
             exec_leads = leads_by_exec.get(exec_id, [])   # empty list = no leads today
+            overdue_c  = overdue_by_exec.get(exec_id, 0)
             name       = exec_name or f"Exec #{exec_id}"
-            msg        = _build_exec_digest(name, exec_leads)
+            
+            # Skip sending ONLY if 0 leads today AND 0 overdue
+            if not exec_leads and overdue_c == 0:
+                continue
+
+            msg        = _build_exec_digest(name, exec_leads, overdue_c)
             _send_message(_bot, _loop, exec_id, msg)
             sent_execs += 1
-            print(f"  ✅ Exec digest → {name} ({exec_id}), {len(exec_leads)} lead(s) today")
+            print(f"  ✅ Exec digest → {name} ({exec_id}), {len(exec_leads)} leads today, {overdue_c} overdue")
 
         # ── Owner full-team summary ────────────────────────────────────────────
         if owner_chat_id:
-            owner_msg = _build_owner_digest(todays_leads)
+            owner_msg = _build_owner_digest(todays_leads, overdue_by_exec)
             _send_message(_bot, _loop, owner_chat_id, owner_msg)
             print(f"  ✅ Owner digest → chat_id={owner_chat_id}, {len(todays_leads)} total lead(s)")
 
