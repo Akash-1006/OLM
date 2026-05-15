@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Admin Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; display: flex; height: 100vh; background: #f4f7f6; }
+        .sidebar { width: 250px; background: #2c3e50; color: white; padding: 20px; }
+        .sidebar h2 { margin-top: 0; font-size: 1.2em; border-bottom: 1px solid #34495e; padding-bottom: 10px; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar li { padding: 10px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; }
+        .sidebar li:hover, .sidebar li.active { background: #34495e; }
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+        th { background: #fafafa; }
+        .btn { padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer; font-size: 0.9em; }
+        .btn-primary { background: #3498db; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-success { background: #2ecc71; color: white; }
+        .status-active { color: #2ecc71; font-weight: bold; }
+        .status-suspended { color: #e74c3c; font-weight: bold; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; visibility: hidden; }
+        .modal.active { visibility: visible; }
+        .modal-content { background: white; padding: 30px; border-radius: 8px; width: 500px; max-height: 90vh; overflow-y: auto; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Super-Admin</h2>
+    <ul>
+        <li class="active" onclick="showSection('clients')">Clients</li>
+        <li onclick="showSection('form-builder')">Form Builder</li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <!-- Clients Section -->
+    <div id="section-clients">
+        <div class="header">
+            <h1>Client Management</h1>
+            <button class="btn btn-primary" onclick="openClientModal()">+ Create Client</button>
+        </div>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Plan</th>
+                        <th>Expiry</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="client-table-body">
+                    <!-- Loaded via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Form Builder Section -->
+    <div id="section-form-builder" class="hidden">
+        <div class="header">
+            <h1>Form Builder</h1>
+            <select id="builder-client-select" onchange="loadFormBuilder()">
+                <option value="">Select a Client</option>
+            </select>
+        </div>
+        <div id="builder-content" class="hidden">
+            <div class="card">
+                <div class="header">
+                    <h3>Field Groups (Sections)</h3>
+                    <button class="btn btn-success" onclick="openGroupModal()">+ Add Group</button>
+                </div>
+                <ul id="group-list"></ul>
+            </div>
+            <div class="card">
+                <div class="header">
+                    <h3>Custom Fields</h3>
+                    <button class="btn btn-success" onclick="openFieldModal()">+ Add Field</button>
+                </div>
+                <table id="field-table">
+                    <thead>
+                        <tr>
+                            <th>Label</th>
+                            <th>Key</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Searchable</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="field-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Client Modal -->
+<div id="client-modal" class="modal">
+    <div class="modal-content">
+        <h2 id="client-modal-title">Create Client</h2>
+        <form id="client-form">
+            <input type="hidden" id="client-id">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="client-name" required>
+            </div>
+            <div class="form-group">
+                <label>Slug</label>
+                <input type="text" id="client-slug" required>
+            </div>
+            <div class="form-group">
+                <label>Bot Token</label>
+                <input type="text" id="client-token" required>
+            </div>
+            <div class="form-group">
+                <label>Plan</label>
+                <select id="client-plan">
+                    <option value="starter">Starter</option>
+                    <option value="pro">Pro</option>
+                    <option value="enterprise">Enterprise</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Expiry Date</label>
+                <input type="date" id="client-expiry">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="client-status">
+                    <option value="active">Active</option>
+                    <option value="suspended">Suspended</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button type="button" class="btn" onclick="closeModal('client-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Client</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Group Modal -->
+<div id="group-modal" class="modal">
+    <div class="modal-content">
+        <h2>Add Field Group</h2>
+        <form id="group-form">
+            <div class="form-group">
+                <label>Group Name (Display)</label>
+                <input type="text" id="group-name" required>
+            </div>
+            <div class="form-group">
+                <label>Key</label>
+                <input type="text" id="group-key" required>
+            </div>
+            <div class="form-group">
+                <label>Icon (Emoji)</label>
+                <input type="text" id="group-icon">
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button type="button" class="btn" onclick="closeModal('group-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Group</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Field Modal -->
+<div id="field-modal" class="modal">
+    <div class="modal-content">
+        <h2>Add Custom Field</h2>
+        <form id="field-form">
+            <div class="form-group">
+                <label>Group</label>
+                <select id="field-group-id"></select>
+            </div>
+            <div class="form-group">
+                <label>Label</label>
+                <input type="text" id="field-label" required>
+            </div>
+            <div class="form-group">
+                <label>Key</label>
+                <input type="text" id="field-key" required>
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select id="field-type">
+                    <option value="text">Short Text</option>
+                    <option value="textarea">Long Text</option>
+                    <option value="number">Number</option>
+                    <option value="dropdown">Dropdown</option>
+                    <option value="date">Date</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" id="field-required"> Required</label>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" id="field-searchable"> Searchable</label>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button type="button" class="btn" onclick="closeModal('field-modal')">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Field</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const API_BASE = '/api/admin';
+    let currentClientId = null;
+
+    async function fetchClients() {
+        const res = await fetch(`${API_BASE}/clients`);
+        const clients = await res.json();
+        const tbody = document.getElementById('client-table-body');
+        const select = document.getElementById('builder-client-select');
+
+        tbody.innerHTML = '';
+        select.innerHTML = '<option value="">Select a Client</option>';
+
+        clients.forEach(c => {
+            const row = `
+                <tr>
+                    <td>${c.name}</td>
+                    <td><span class="status-${c.status}">${c.status}</span></td>
+                    <td>${c.plan}</td>
+                    <td>${c.expires_at || 'Never'}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="editClient('${c.id}')">Edit</button>
+                        <button class="btn ${c.status === 'active' ? 'btn-danger' : 'btn-success'}" onclick="toggleClientStatus('${c.id}', '${c.status}')">
+                            ${c.status === 'active' ? 'Suspend' : 'Activate'}
+                        </button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+            select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+        });
+    }
+
+    function showSection(id) {
+        document.querySelectorAll('.main-content > div').forEach(d => d.classList.add('hidden'));
+        document.getElementById(`section-${id}`).classList.remove('hidden');
+        document.querySelectorAll('.sidebar li').forEach(l => l.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        if (id === 'clients') fetchClients();
+    }
+
+    function openClientModal() {
+        document.getElementById('client-form').reset();
+        document.getElementById('client-id').value = '';
+        document.getElementById('client-modal-title').textContent = 'Create Client';
+        document.getElementById('client-modal').classList.add('active');
+    }
+
+    async function editClient(id) {
+        const res = await fetch(`${API_BASE}/clients/${id}`);
+        const c = await res.json();
+        document.getElementById('client-id').value = c.id;
+        document.getElementById('client-name').value = c.name;
+        document.getElementById('client-slug').value = c.slug;
+        document.getElementById('client-token').value = c.bot_token;
+        document.getElementById('client-plan').value = c.plan;
+        document.getElementById('client-status').value = c.status;
+        if(c.expires_at) document.getElementById('client-expiry').value = c.expires_at.split('T')[0];
+
+        document.getElementById('client-modal-title').textContent = 'Edit Client';
+        document.getElementById('client-modal').classList.add('active');
+    }
+
+    async function toggleClientStatus(id, currentStatus) {
+        const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
+        await fetch(`${API_BASE}/clients/${id}`, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({status: newStatus})
+        });
+        fetchClients();
+    }
+
+    document.getElementById('client-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('client-id').value;
+        const data = {
+            name: document.getElementById('client-name').value,
+            slug: document.getElementById('client-slug').value,
+            bot_token: document.getElementById('client-token').value,
+            plan: document.getElementById('client-plan').value,
+            status: document.getElementById('client-status').value,
+            expires_at: document.getElementById('client-expiry').value
+        };
+
+        const url = id ? `${API_BASE}/clients/${id}` : `${API_BASE}/clients`;
+        const method = id ? 'PATCH' : 'POST';
+
+        await fetch(url, {
+            method: method,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        closeModal('client-modal');
+        fetchClients();
+    };
+
+    // --- Form Builder Logic ---
+    async function loadFormBuilder() {
+        currentClientId = document.getElementById('builder-client-select').value;
+        if (!currentClientId) {
+            document.getElementById('builder-content').classList.add('hidden');
+            return;
+        }
+        document.getElementById('builder-content').classList.remove('hidden');
+
+        const [groupsRes, fieldsRes] = await Promise.all([
+            fetch(`${API_BASE}/clients/${currentClientId}/groups`),
+            fetch(`${API_BASE}/clients/${currentClientId}/fields`)
+        ]);
+
+        const groups = await groupsRes.json();
+        const fields = await fieldsRes.json();
+
+        const groupList = document.getElementById('group-list');
+        groupList.innerHTML = groups.map(g => `<li>${g.icon || ''} ${g.name} (<code>${g.key}</code>)</li>`).join('');
+
+        const fieldSelect = document.getElementById('field-group-id');
+        fieldSelect.innerHTML = '<option value="">None (General)</option>' + groups.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+
+        const fieldTbody = document.getElementById('field-table-body');
+        fieldTbody.innerHTML = fields.map(f => `
+            <tr>
+                <td>${f.label}</td>
+                <td><code>${f.key}</code></td>
+                <td>${f.field_type}</td>
+                <td>${f.is_required ? '✅' : '❌'}</td>
+                <td>${f.is_searchable ? '✅' : '❌'}</td>
+                <td><button class="btn btn-danger" onclick="deleteField('${f.id}')">Delete</button></td>
+            </tr>
+        `).join('');
+    }
+
+    function openGroupModal() { document.getElementById('group-modal').classList.add('active'); }
+    function openFieldModal() { document.getElementById('field-modal').classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    document.getElementById('group-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const data = {
+            name: document.getElementById('group-name').value,
+            key: document.getElementById('group-key').value,
+            icon: document.getElementById('group-icon').value
+        };
+        await fetch(`${API_BASE}/clients/${currentClientId}/groups`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        closeModal('group-modal');
+        loadFormBuilder();
+    };
+
+    document.getElementById('field-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const data = {
+            group_id: document.getElementById('field-group-id').value,
+            label: document.getElementById('field-label').value,
+            key: document.getElementById('field-key').value,
+            field_type: document.getElementById('field-type').value,
+            is_required: document.getElementById('field-required').checked,
+            is_searchable: document.getElementById('field-searchable').checked
+        };
+        await fetch(`${API_BASE}/clients/${currentClientId}/fields`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        closeModal('field-modal');
+        loadFormBuilder();
+    };
+
+    async function deleteField(id) {
+        if(!confirm('Are you sure?')) return;
+        await fetch(`${API_BASE}/fields/${id}`, { method: 'DELETE' });
+        loadFormBuilder();
+    }
+
+    fetchClients();
+</script>
+
+</body>
+</html>
