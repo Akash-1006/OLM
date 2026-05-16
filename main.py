@@ -8,6 +8,9 @@ from core.cache import cache
 from modules.form_engine.router import router as form_router
 from modules.leads.router import router as lead_router
 from modules.admin.router import router as admin_router
+from modules.bots.router import router as bot_router
+from modules.bots.orchestrator import orchestrator
+from modules.bots.scheduler import start_scheduler, stop_scheduler
 from core.database import engine, Base
 
 @asynccontextmanager
@@ -15,10 +18,25 @@ async def lifespan(app: FastAPI):
     # Startup
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    await cache.connect()
+    try:
+        await cache.connect()
+    except Exception as e:
+        print(f"⚠️ Redis connection failed: {e}. Caching disabled.")
+
+    try:
+        await orchestrator.load_all_active_bots()
+    except Exception as e:
+        print(f"⚠️ Bot loading failed: {e}")
+
+    await start_scheduler()
     yield
     # Shutdown
-    await cache.disconnect()
+    await stop_scheduler()
+    await orchestrator.stop_all()
+    try:
+        await cache.disconnect()
+    except:
+        pass
 
 app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 
@@ -33,6 +51,7 @@ app.add_middleware(
 app.include_router(form_router, prefix=settings.API_V1_STR)
 app.include_router(lead_router, prefix=settings.API_V1_STR)
 app.include_router(admin_router, prefix=f"{settings.API_V1_STR}/admin")
+app.include_router(bot_router)
 
 @app.get("/miniapp", response_class=HTMLResponse)
 async def serve_miniapp():
