@@ -11,9 +11,11 @@ Key changes vs old Flask app:
 import asyncio
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler
 
@@ -29,7 +31,9 @@ from bot.scheduler import (
 )
 from bot.daily_digest import register_daily_digest
 
-# ── Build Telegram Application once (module-level singleton) ────────────────
+BASE_DIR = Path(__file__).parent
+
+# ── Build Telegram Application once (module-level singleton) ──────────────────
 telegram_app = Application.builder().token(TELEGRAM_TOKEN).build()
 telegram_app.add_handler(CommandHandler("newlead", start_lead))
 telegram_app.add_handler(CommandHandler("start",   start_lead))
@@ -40,32 +44,22 @@ register_admin_handlers(telegram_app)
 # ── Lifespan: startup & shutdown ───────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # ─── STARTUP ────────────────────────────────────────────────────────────────
-    # 1. Create all DB tables (idempotent)
+    # ─ STARTUP ────────────────────────────────────────────────────────────────────
     Base.metadata.create_all(engine)
 
-    # 2. Initialise Telegram bot & set webhook
     await telegram_app.initialize()
     await telegram_app.start()
     await telegram_app.bot.set_webhook(f"{WEBHOOK_URL}/webhook")
-    print(f"✅ Telegram bot initialized & webhook set → {WEBHOOK_URL}/webhook")
+    print(f"\u2705 Telegram bot initialized & webhook set \u2192 {WEBHOOK_URL}/webhook")
 
-    # 3. Capture the running event loop (uvicorn's loop)
-    #    This replaces the old threading.Thread + asyncio.new_event_loop() hack.
     loop = asyncio.get_event_loop()
-
-    # 4. Store references on app.state so routers can access them
-    app.state.bot         = telegram_app.bot
-    app.state.loop        = loop
+    app.state.bot          = telegram_app.bot
+    app.state.loop         = loop
     app.state.telegram_app = telegram_app
 
-    # 5. Register daily digest cron
     register_daily_digest(apscheduler, telegram_app.bot, loop)
-
-    # 6. Recover any scheduled follow-ups from DB
     sync_scheduler_with_db(telegram_app.bot, loop)
 
-    # 7. Hourly re-sync to catch any missed leads
     apscheduler.add_job(
         sync_scheduler_with_db,
         trigger="interval",
@@ -76,26 +70,55 @@ async def lifespan(app: FastAPI):
     )
 
     print_scheduler_status()
-    print("✅ OLM SaaS — FastAPI ready")
+    print("\u2705 OLM SaaS \u2014 FastAPI ready")
 
-    yield   # ←── application runs here ──→
+    yield   # ←─ application runs here ─→
 
-    # ─── SHUTDOWN ───────────────────────────────────────────────────────────────
+    # ─ SHUTDOWN ───────────────────────────────────────────────────────────────────
     apscheduler.shutdown(wait=False)
     await telegram_app.stop()
     await telegram_app.shutdown()
-    print("🛑 OLM SaaS — shutdown complete")
+    print("\U0001f6d1 OLM SaaS \u2014 shutdown complete")
 
 
-# ── FastAPI app ────────────────────────────────────────────────────────────────────
+# ── FastAPI app ──────────────────────────────────────────────────────────────────
 app = FastAPI(
     title="OLM SaaS",
     version="2.0.0",
-    description="On-site Lead Management — multi-tenant SaaS",
+    description="On-site Lead Management \u2014 multi-tenant SaaS",
     lifespan=lifespan,
 )
 
-# ── Mount routers ──────────────────────────────────────────────────────────────────
+# ── Static files ────────────────────────────────────────────────────────────────
+if (BASE_DIR / "static").exists():
+    app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
+if (BASE_DIR / "miniapp").exists():
+    app.mount("/miniapp-static", StaticFiles(directory=BASE_DIR / "miniapp"), name="miniapp_static")
+
+
+# ── HTML page routes ───────────────────────────────────────────────────────────
+@app.get("/admin-panel", include_in_schema=False)
+async def serve_admin_panel():
+    """Serve the tenant admin dashboard HTML."""
+    html = BASE_DIR / "admin_dashboard" / "index.html"
+    if not html.exists():
+        html = BASE_DIR / "static" / "admin.html"
+    if not html.exists():
+        return JSONResponse({"error": "Admin panel HTML not found"}, status_code=404)
+    return FileResponse(html)
+
+
+@app.get("/master-admin", include_in_schema=False)
+async def serve_master_admin():
+    """Serve the master admin HTML."""
+    html = BASE_DIR / "master_admin" / "index.html"
+    if not html.exists():
+        return JSONResponse({"error": "Master admin HTML not found"}, status_code=404)
+    return FileResponse(html)
+
+
+# ── API routers ─────────────────────────────────────────────────────────────────
 from routers import webhook, miniapp, admin, master_admin
 
 app.include_router(webhook.router)
@@ -104,13 +127,13 @@ app.include_router(admin.router)
 app.include_router(master_admin.router)
 
 
-# ── Health check ──────────────────────────────────────────────────────────────────
+# ── Health check ────────────────────────────────────────────────────────────────
 @app.get("/health")
 async def health():
     return {"status": "running", "version": "2.0.0"}
 
 
-# ── Dev entrypoint ──────────────────────────────────────────────────────────────────
+# ── Dev entrypoint ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=5001, reload=False)
