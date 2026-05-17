@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: olm-saas
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: WEBHOOK_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: MASTER_ADMIN_KEY
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: MINIAPP_ACCESS_KEY
+        sync: false
+      - key: DIGEST_OWNER_CHAT_ID
+        sync: false
+      - key: DEFAULT_TENANT_SLUG
+        value: default

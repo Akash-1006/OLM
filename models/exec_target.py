@@ -1,22 +1,18 @@
 # models/exec_target.py
-from sqlalchemy import Column, Integer, String, Float, DateTime, BigInteger, UniqueConstraint
-from datetime import datetime
+from sqlalchemy import Column, Integer, Float, String, UniqueConstraint
 from db import Base
 
+
 class ExecTarget(Base):
-    __tablename__ = "exec_targets"
+    __tablename__   = "exec_targets"
+    __table_args__  = (UniqueConstraint("tenant_id", "sales_exec_id"),)
 
     id              = Column(Integer, primary_key=True)
-    sales_exec_id   = Column(BigInteger, nullable=False, index=True)
-    sales_exec_name = Column(String(255))
+    tenant_id       = Column(Integer, nullable=False, default=1, index=True)
+    sales_exec_id   = Column(Integer, nullable=False, index=True)
+    monthly_leads   = Column(Integer, default=30)
+    conversion_pct  = Column(Float,   default=40.0)
+    volume_m3       = Column(Float,   default=500.0)
 
-    # Targets (admin-set)
-    monthly_leads   = Column(Integer,  default=30)    # leads/month
-    conversion_pct  = Column(Float,    default=40.0)  # % conversion rate target
-    volume_m3       = Column(Float,    default=500.0) # m³ volume target/month
-
-    updated_at      = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    __table_args__ = (
-        UniqueConstraint("sales_exec_id", name="uq_exec_target_exec_id"),
-    )
+    def __repr__(self):
+        return f"<ExecTarget tenant={self.tenant_id} exec={self.sales_exec_id}>"
