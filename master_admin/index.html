@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OLM Master Admin</title>
+<style>
+:root{
+  --bg:#111318;--surface:#1a1d24;--surface2:#21252e;--border:#2a2d36;
+  --text:#e2e4ea;--muted:#8b8fa8;--faint:#3a3d4a;
+  --green:#22c55e;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --radius:8px;--radius-lg:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+a{color:var(--blue);text-decoration:none}
+button{cursor:pointer;font:inherit;border:none;border-radius:var(--radius)}
+input,select,textarea{font:inherit;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);padding:.5rem .75rem;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--blue);outline-offset:2px}
+label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:.25rem}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:var(--radius);font-size:.85rem;font-weight:500;transition:opacity .15s}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{opacity:.85}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{opacity:.85}
+.btn-success{background:var(--green);color:#111}.btn-success:hover{opacity:.85}
+.btn-ghost{background:var(--faint);color:var(--text)}.btn-ghost:hover{background:var(--border)}
+.badge{display:inline-block;padding:.15rem .5rem;border-radius:999px;font-size:.72rem;font-weight:600}
+.badge-active{background:#16503a;color:var(--green)}
+.badge-suspended{background:#4a1a1a;color:var(--red)}
+.badge-trial{background:#4a3a10;color:var(--amber)}
+.badge-free{background:var(--faint);color:var(--muted)}
+.badge-pro{background:#1a2f5a;color:var(--blue)}
+/* layout */
+.sidebar{position:fixed;top:0;left:0;height:100%;width:220px;background:var(--surface);border-right:1px solid var(--border);padding:1.5rem 1rem;display:flex;flex-direction:column;gap:.25rem;z-index:10}
+.sidebar h1{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.nav-item{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:var(--radius);color:var(--muted);font-size:.875rem;cursor:pointer;transition:background .15s,color .15s}
+.nav-item:hover,.nav-item.active{background:var(--faint);color:var(--text)}
+.main{margin-left:220px;padding:2rem;min-height:100vh}
+.page{display:none}.page.active{display:block}
+.page-title{font-size:1.5rem;font-weight:700;margin-bottom:1.5rem}
+/* cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+.card+.card{margin-top:1rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+.stat-val{font-size:2rem;font-weight:700}
+.stat-lbl{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+/* table */
+table{width:100%;border-collapse:collapse;font-size:.875rem}
+th{text-align:left;padding:.75rem 1rem;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:.75rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:var(--surface2)}
+.tbl-actions{display:flex;gap:.5rem}
+/* modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+.modal h2{font-size:1.1rem;font-weight:600;margin-bottom:1.25rem}
+.field{margin-bottom:1rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.form-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.25rem}
+/* toast */
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1.25rem;font-size:.875rem;z-index:200;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none}
+#toast.show{opacity:1;transform:none}
+#toast.ok{border-color:var(--green);color:var(--green)}
+#toast.err{border-color:var(--red);color:var(--red)}
+/* login */
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem;width:100%;max-width:360px}
+.login-card h1{font-size:1.25rem;font-weight:700;margin-bottom:.5rem}
+.login-card p{color:var(--muted);font-size:.875rem;margin-bottom:1.5rem}
+.login-card .field{margin-bottom:1rem}
+@media(max-width:640px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.field-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-card">
+    <h1>&#x1F512; OLM Master Admin</h1>
+    <p>Platform control panel &mdash; authorized personnel only</p>
+    <div class="field"><label>Username</label><input id="loginUser" type="text" placeholder="admin" autocomplete="username"></div>
+    <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="current-password"></div>
+    <div id="loginErr" style="color:var(--red);font-size:.8rem;min-height:1rem;margin-bottom:.75rem"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- APP SHELL (hidden until logged in) -->
+<div id="appShell" style="display:none">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h1>&#x1F3E2; OLM Platform</h1>
+    <div class="nav-item active" onclick="nav('stats')">&#x1F4CA; Dashboard</div>
+    <div class="nav-item" onclick="nav('tenants')">&#x1F3E2; Tenants</div>
+    <div class="nav-item" onclick="nav('defaults')">&#x2699;&#xFE0F; Platform Defaults</div>
+    <div style="margin-top:auto">
+      <div class="nav-item" onclick="logout()" style="color:var(--red)">&#x1F6AA; Sign Out</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- STATS PAGE -->
+    <div id="page-stats" class="page active">
+      <div class="page-title">&#x1F4CA; Platform Dashboard</div>
+      <div id="statsGrid" class="stat-grid"></div>
+      <div class="card"><h3 style="margin-bottom:1rem">Tenants at a Glance</h3><table><thead><tr><th>Tenant</th><th>Plan</th><th>Status</th><th>Total Leads</th></tr></thead><tbody id="statsTbl"></tbody></table></div>
+    </div>
+
+    <!-- TENANTS PAGE -->
+    <div id="page-tenants" class="page">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+        <div class="page-title" style="margin-bottom:0">&#x1F3E2; Tenants</div>
+        <button class="btn btn-primary" onclick="openCreateTenant()">+ New Tenant</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <table><thead><tr>
+          <th>ID</th><th>Name</th><th>Slug</th><th>Plan</th><th>Status</th><th>Actions</th>
+        </tr></thead><tbody id="tenantsTbl"></tbody></table>
+      </div>
+    </div>
+
+    <!-- DEFAULTS PAGE -->
+    <div id="page-defaults" class="page">
+      <div class="page-title">&#x2699;&#xFE0F; Platform Defaults</div>
+      <div class="card">
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.25rem">These defaults are seeded into every new tenant. Existing tenant configs are not overwritten.</p>
+        <div class="field"><label>Default Stages (one per line)</label><textarea id="def-stages" rows="8" style="font-family:monospace"></textarea></div>
+        <div class="field"><label>Default Materials (one per line)</label><textarea id="def-materials" rows="4" style="font-family:monospace"></textarea></div>
+        <div class="field"><label>Default Work Statuses (one per line)</label><textarea id="def-statuses" rows="6" style="font-family:monospace"></textarea></div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="saveDefaults()">&#x1F4BE; Save Defaults</button></div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /appShell -->
+
+<!-- CREATE / EDIT TENANT MODAL -->
+<div class="modal-overlay" id="tenantModal">
+  <div class="modal">
+    <h2 id="modalTitle">New Tenant</h2>
+    <input type="hidden" id="editTenantId">
+    <div class="field-row">
+      <div class="field"><label>Business Name *</label><input id="t-name" placeholder="Titans Concrete"></div>
+      <div class="field"><label>Slug (URL-safe) *</label><input id="t-slug" placeholder="titans"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Plan</label><select id="t-plan"><option>free</option><option>pro</option><option>enterprise</option></select></div>
+      <div class="field"><label>Status</label><select id="t-status"><option>active</option><option>trial</option><option>suspended</option></select></div>
+    </div>
+    <div class="field"><label>Telegram Bot Token</label><input id="t-token" placeholder="123456:ABC..."></div>
+    <div class="field"><label>Webhook / Server URL</label><input id="t-webhook" placeholder="https://your-server.com"></div>
+    <div class="field"><label>Mini App Base URL</label><input id="t-miniapp" placeholder="https://your-server.com"></div>
+    <div class="field"><label>Admin Password (leave blank to keep existing)</label><input id="t-adminpw" type="password" placeholder="new password"></div>
+    <div class="field"><label>Digest Owner Chat ID</label><input id="t-digestid" placeholder="Telegram user chat_id"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('tenantModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTenant()">Save Tenant</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+const BASE = window.location.origin;
+let _creds = null;   // { username, password } stored in memory only
+
+// ── Auth ─────────────────────────────────────────────────────────────────
+
+async function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (!u || !p) { document.getElementById('loginErr').textContent = 'Enter username and password'; return; }
+  const ok = await apiGet('/master/health', {username: u, password: p});
+  if (ok === null) { document.getElementById('loginErr').textContent = 'Invalid credentials'; return; }
+  _creds = {username: u, password: p};
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appShell').style.display = '';
+  loadStats();
+  loadTenants();
+  loadDefaults();
+}
+
+function logout() {
+  _creds = null;
+  document.getElementById('loginPage').style.display = '';
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('loginPass').value = '';
+}
+
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ── API helpers ──────────────────────────────────────────────────────────
+
+function authHeaders(creds) {
+  const c = creds || _creds;
+  return { 'Authorization': 'Basic ' + btoa(`${c.username}:${c.password}`) };
+}
+
+async function apiGet(path, creds) {
+  try {
+    const r = await fetch(BASE + path, { headers: authHeaders(creds) });
+    if (!r.ok) return null;
+    return r.json();
+  } catch { return null; }
+}
+
+async function apiPost(path, body) {
+  try {
+    const r = await fetch(BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify(body),
+    });
+    const data = await r.json().catch(() => ({}));
+    return { ok: r.ok, status: r.status, data };
+  } catch(e) { return { ok: false, data: { detail: e.message } }; }
+}
+
+async function apiPatch(path, body) {
+  try {
+    const r = await fetch(BASE + path, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify(body),
+    });
+    const data = await r.json().catch(() => ({}));
+    return { ok: r.ok, status: r.status, data };
+  } catch(e) { return { ok: false, data: { detail: e.message } }; }
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = `show ${type}`;
+  setTimeout(() => { el.className = ''; }, 3200);
+}
+
+// ── Navigation ───────────────────────────────────────────────────────────────
+
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+
+// Close modal on overlay click
+document.getElementById('tenantModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal('tenantModal');
+});
+
+// ── Stats page ─────────────────────────────────────────────────────────────
+
+async function loadStats() {
+  const data = await apiGet('/master/stats');
+  if (!data) return;
+  const grid = document.getElementById('statsGrid');
+  grid.innerHTML = [
+    { val: data.total_tenants,    lbl: 'Total Tenants' },
+    { val: data.active_tenants,   lbl: 'Active' },
+    { val: data.suspended_tenants,lbl: 'Suspended' },
+    { val: data.total_leads,      lbl: 'Total Leads' },
+  ].map(s => `<div class="stat-card"><div class="stat-val">${s.val ?? '—'}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
+
+  const tbl = document.getElementById('statsTbl');
+  tbl.innerHTML = (data.tenant_breakdown || []).map(t =>
+    `<tr>
+      <td>${esc(t.name)}</td>
+      <td><span class="badge badge-${t.plan}">${t.plan}</span></td>
+      <td><span class="badge badge-${t.status}">${t.status}</span></td>
+      <td>${t.lead_count}</td>
+    </tr>`
+  ).join('');
+}
+
+// ── Tenants page ────────────────────────────────────────────────────────────
+
+let _tenants = [];
+
+async function loadTenants() {
+  const data = await apiGet('/master/tenants');
+  if (!data) return;
+  _tenants = data.tenants || [];
+  renderTenants();
+}
+
+function renderTenants() {
+  const tbl = document.getElementById('tenantsTbl');
+  tbl.innerHTML = _tenants.map(t => `
+    <tr>
+      <td style="color:var(--muted)">${t.id}</td>
+      <td><strong>${esc(t.name)}</strong></td>
+      <td><code style="font-size:.8rem;color:var(--muted)">${esc(t.slug)}</code></td>
+      <td><span class="badge badge-${t.plan}">${t.plan}</span></td>
+      <td><span class="badge badge-${t.status}">${t.status}</span></td>
+      <td>
+        <div class="tbl-actions">
+          <button class="btn btn-ghost" style="padding:.3rem .6rem;font-size:.8rem" onclick="openEditTenant(${t.id})">&#x270F;&#xFE0F; Edit</button>
+          ${t.status === 'suspended'
+            ? `<button class="btn btn-success" style="padding:.3rem .6rem;font-size:.8rem" onclick="setStatus(${t.id},'active')">&#x25B6;&#xFE0F; Activate</button>`
+            : `<button class="btn btn-danger"  style="padding:.3rem .6rem;font-size:.8rem" onclick="setStatus(${t.id},'suspended')">&#x23F8;&#xFE0F; Suspend</button>`
+          }
+          <button class="btn btn-ghost" style="padding:.3rem .6rem;font-size:.8rem" onclick="rotateKey(${t.id})">&#x1F504; Key</button>
+        </div>
+      </td>
+    </tr>`
+  ).join('');
+}
+
+function openCreateTenant() {
+  document.getElementById('modalTitle').textContent = 'New Tenant';
+  document.getElementById('editTenantId').value = '';
+  ['t-name','t-slug','t-token','t-webhook','t-miniapp','t-adminpw','t-digestid'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('t-plan').value = 'free';
+  document.getElementById('t-status').value = 'active';
+  openModal('tenantModal');
+}
+
+function openEditTenant(id) {
+  const t = _tenants.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('modalTitle').textContent = 'Edit Tenant';
+  document.getElementById('editTenantId').value = id;
+  document.getElementById('t-name').value    = t.name || '';
+  document.getElementById('t-slug').value    = t.slug || '';
+  document.getElementById('t-plan').value    = t.plan || 'free';
+  document.getElementById('t-status').value  = t.status || 'active';
+  document.getElementById('t-token').value   = t.telegram_token || '';
+  document.getElementById('t-webhook').value = t.webhook_url || '';
+  document.getElementById('t-miniapp').value = t.miniapp_base_url || '';
+  document.getElementById('t-digestid').value = t.digest_owner_chat_id || '';
+  document.getElementById('t-adminpw').value = '';
+  openModal('tenantModal');
+}
+
+async function saveTenant() {
+  const id = document.getElementById('editTenantId').value;
+  const body = {
+    name:                document.getElementById('t-name').value.trim(),
+    slug:                document.getElementById('t-slug').value.trim().toLowerCase(),
+    plan:                document.getElementById('t-plan').value,
+    status:              document.getElementById('t-status').value,
+    telegram_token:      document.getElementById('t-token').value.trim() || null,
+    webhook_url:         document.getElementById('t-webhook').value.trim() || null,
+    miniapp_base_url:    document.getElementById('t-miniapp').value.trim() || null,
+    admin_password:      document.getElementById('t-adminpw').value || null,
+    digest_owner_chat_id: document.getElementById('t-digestid').value.trim() || null,
+  };
+  if (!body.name || !body.slug) { toast('Name and Slug are required', 'err'); return; }
+  const res = id ? await apiPatch(`/master/tenants/${id}`, body) : await apiPost('/master/tenants', body);
+  if (res.ok) {
+    toast(id ? 'Tenant updated ✓' : 'Tenant created ✓');
+    closeModal('tenantModal'); loadTenants(); loadStats();
+  } else {
+    toast(res.data?.detail || 'Error saving tenant', 'err');
+  }
+}
+
+async function setStatus(id, status) {
+  if (!confirm(`${status === 'suspended' ? 'Suspend' : 'Activate'} this tenant?`)) return;
+  const res = await apiPatch(`/master/tenants/${id}`, { status });
+  if (res.ok) { toast(`Tenant ${status} ✓`); loadTenants(); loadStats(); }
+  else toast('Failed to update status', 'err');
+}
+
+async function rotateKey(id) {
+  if (!confirm('Rotate this tenant\'s mini-app access key? The old key will stop working immediately.')) return;
+  const res = await apiPost(`/master/tenants/${id}/rotate-key`, {});
+  if (res.ok) {
+    const k = res.data.miniapp_access_key;
+    await navigator.clipboard.writeText(k).catch(() => {});
+    toast(`New key copied: ${k.slice(0,12)}...`);
+  } else toast('Failed to rotate key', 'err');
+}
+
+// ── Platform Defaults page ──────────────────────────────────────────────
+
+async function loadDefaults() {
+  const data = await apiGet('/master/defaults');
+  if (!data) return;
+  document.getElementById('def-stages').value    = (data.stages        || []).join('\n');
+  document.getElementById('def-materials').value = (data.materials     || []).join('\n');
+  document.getElementById('def-statuses').value  = (data.work_statuses || []).join('\n');
+}
+
+async function saveDefaults() {
+  const body = {
+    stages:        document.getElementById('def-stages').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    materials:     document.getElementById('def-materials').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    work_statuses: document.getElementById('def-statuses').value.split('\n').map(s=>s.trim()).filter(Boolean),
+  };
+  const res = await apiPost('/master/defaults', body);
+  if (res.ok) toast('Defaults saved ✓');
+  else toast(res.data?.detail || 'Error saving defaults', 'err');
+}
+
+// ── Util ───────────────────────────────────────────────────────────────────────
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
