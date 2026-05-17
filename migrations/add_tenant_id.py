@@ -3,69 +3,78 @@
 migrations/add_tenant_id.py
 
 One-time migration script to:
-  1. Create the tenants table
-  2. Create the tenant_configs table
-  3. Create the platform_admins table
-  4. Add tenant_id column to: leads, lead_updates, exec_targets
-  5. Create a default tenant for the existing single-tenant data
-  6. Backfill tenant_id = 1 on all existing rows
+  1. Create the tenants, tenant_configs, platform_admins tables
+  2. Add tenant_id column to: leads, lead_updates, exec_targets
+  3. Create a default tenant for the existing single-tenant data
+  4. Seed default config for tenant 1
+  5. Backfill tenant_id = 1 on all existing rows
+
+Works with both SQLite (dev) and PostgreSQL (prod).
 
 Run once:
-  python -m migrations.add_tenant_id
+  python migrations/add_tenant_id.py
 """
 import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from sqlalchemy import text, inspect
+from sqlalchemy import text, inspect as sa_inspect
 from db import engine, SessionLocal, Base
 
-# Import all models so Base.metadata is complete
+# Import all models so Base.metadata is populated
 from models.tenant import Tenant
-from models.tenant_config import TenantConfig, set_config
+from models.tenant_config import TenantConfig, set_config, seed_default_config
 from models.platform_admin import PlatformAdmin
 from models.lead import Lead
 from models.lead_update import LeadUpdate
 from models.exec_target import ExecTarget
 
 
-def column_exists(conn, table: str, column: str) -> bool:
-    result = conn.execute(
-        text(
-            "SELECT COUNT(*) FROM information_schema.columns "
-            "WHERE table_name = :t AND column_name = :c"
-        ),
-        {"t": table, "c": column},
-    )
-    return result.scalar() > 0
+def column_exists(table: str, column: str) -> bool:
+    """Check if a column exists using SQLAlchemy's cross-DB inspector."""
+    inspector = sa_inspect(engine)
+    cols = [c["name"] for c in inspector.get_columns(table)]
+    return column in cols
+
+
+def table_exists(table: str) -> bool:
+    inspector = sa_inspect(engine)
+    return table in inspector.get_table_names()
 
 
 def run():
-    print("[1/6] Creating new tables (tenants, tenant_configs, platform_admins) ...")
+    print("\n=== OLM SaaS Migration ===\n")
+
+    # ── Step 1: Create new tables ──────────────────────────────────────────────
+    print("[1/5] Creating new tables (tenants, tenant_configs, platform_admins) ...")
     Base.metadata.create_all(engine)
     print("      Done.")
 
-    print("[2/6] Adding tenant_id columns to business tables ...")
+    # ── Step 2: Add tenant_id columns ─────────────────────────────────────────
+    print("[2/5] Adding tenant_id columns to business tables ...")
     with engine.begin() as conn:
         for table in ("leads", "lead_updates", "exec_targets"):
-            if not column_exists(conn, table, "tenant_id"):
+            if not table_exists(table):
+                print(f"      Table '{table}' does not exist — skipped.")
+                continue
+            if not column_exists(table, "tenant_id"):
                 conn.execute(text(f"ALTER TABLE {table} ADD COLUMN tenant_id INTEGER DEFAULT 1"))
                 print(f"      Added tenant_id to '{table}'.")
             else:
                 print(f"      '{table}'.tenant_id already exists — skipped.")
     print("      Done.")
 
-    print("[3/6] Creating default tenant for existing single-tenant data ...")
+    # ── Step 3: Create default tenant ─────────────────────────────────────────
+    print("[3/5] Creating default tenant for existing data ...")
     db = SessionLocal()
     try:
         existing = db.query(Tenant).filter(Tenant.id == 1).first()
         if not existing:
-            default_name  = os.getenv("DEFAULT_TENANT_NAME", "Default")
-            default_slug  = os.getenv("DEFAULT_TENANT_SLUG", "default")
-            admin_pwd     = os.getenv("ADMIN_PASSWORD",    "admin123")
-            miniapp_key   = os.getenv("MINIAPP_ACCESS_KEY", "")
-            brand_name    = os.getenv("BRAND_NAME",         default_name)
-            miniapp_url   = os.getenv("MINIAPP_BASE_URL",   "")
+            default_name = os.getenv("DEFAULT_TENANT_NAME", "Default")
+            default_slug = os.getenv("DEFAULT_TENANT_SLUG", "default")
+            admin_pwd    = os.getenv("ADMIN_PASSWORD",      "admin123")
+            miniapp_key  = os.getenv("MINIAPP_ACCESS_KEY",  "")
+            miniapp_url  = os.getenv("MINIAPP_BASE_URL",    "")
 
             tenant = Tenant(
                 id=1,
@@ -75,7 +84,6 @@ def run():
                 plan="starter",
                 admin_password_hash=admin_pwd,
                 miniapp_access_key=miniapp_key,
-                brand_name=brand_name,
                 miniapp_base_url=miniapp_url,
             )
             db.add(tenant)
@@ -84,27 +92,22 @@ def run():
         else:
             print("      Default tenant already exists — skipped.")
 
-        print("[4/6] Provisioning default config for tenant 1 ...")
-        defaults = {
-            "stages":               ["Pile", "Footing", "Column", "Slab", "Beam", "Flooring", "Plaster"],
-            "materials":            ["RMC", "TMT", "Blocks", "Sand", "Aggregate"],
-            "work_statuses":        ["Just Started", "In Progress", "50% Done", "Nearly Complete", "Won", "Lost"],
-            "default_monthly_leads":  30,
-            "default_conversion_pct": 40.0,
-            "default_volume_m3":      500.0,
-            "brand_name":             os.getenv("BRAND_NAME", "OLM"),
-        }
-        for key, value in defaults.items():
-            set_config(db, 1, key, value)
+        # ── Step 4: Seed config ────────────────────────────────────────────────
+        print("[4/5] Seeding default config for tenant 1 ...")
+        seed_default_config(db, 1)
+        db.commit()
         print("      Done.")
 
-        print("[5/6] Backfilling tenant_id = 1 on existing rows ...")
+        # ── Step 5: Backfill tenant_id ─────────────────────────────────────────
+        print("[5/5] Backfilling tenant_id = 1 on all existing rows ...")
         with engine.begin() as conn:
             for table in ("leads", "lead_updates", "exec_targets"):
-                conn.execute(text(f"UPDATE {table} SET tenant_id = 1 WHERE tenant_id IS NULL"))
+                if table_exists(table):
+                    conn.execute(text(f"UPDATE {table} SET tenant_id = 1 WHERE tenant_id IS NULL"))
         print("      Done.")
 
-        print("[6/6] Migration complete ✓")
+        print("\n=== Migration complete ✓ ===")
+        print("You can now start the server: uvicorn main:app --host 0.0.0.0 --port 5001 --reload\n")
 
     finally:
         db.close()
