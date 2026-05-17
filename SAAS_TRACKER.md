@@ -38,8 +38,8 @@
 | 2.4 | Update `models/__init__.py` to include all models | `models/__init__.py` | ✅ |
 | 2.5 | Update `models/exec_target.py` — add `tenant_id` FK | `models/exec_target.py` | ✅ |
 | 2.6 | Add `migrations/add_tenant_id.py` — one-time DB migration | `migrations/add_tenant_id.py` | ✅ |
-| 2.7 | Add `tenant_id` to `models/lead.py` | `models/lead.py` | ⏳ |
-| 2.8 | Add `tenant_id` to `models/lead_update.py` | `models/lead_update.py` | ⏳ |
+| 2.7 | Add `tenant_id` to `models/lead.py` | `models/lead.py` | ✅ |
+| 2.8 | Add `tenant_id` to `models/lead_update.py` | `models/lead_update.py` | ✅ |
 
 ---
 
@@ -57,12 +57,16 @@
 
 | # | Task | File(s) | Status |
 |---|------|---------|--------|
-| 4.1 | Mini app JS: replace hardcoded dropdown arrays with `fetch("/api/tenant-config")` | `miniapp/index.html` | ⏳ |
-| 4.2 | Mini app JS: remove hardcoded `MINIAPP_BASE_URL` constant; derive from served URL | `miniapp/index.html` | ⏳ |
-| 4.3 | Admin dashboard: replace hardcoded API base with tenant-resolved URL | `admin_dashboard/` | ⏳ |
-| 4.4 | Admin dashboard: add tenant config editor UI (stages, materials, statuses, brand) | `admin_dashboard/` | ⏳ |
-| 4.5 | Admin dashboard: add per-exec target editor UI | `admin_dashboard/` | ⏳ |
-| 4.6 | Mini app JS: display tenant `brand_name` and `brand_color` from config | `miniapp/index.html` | ⏳ |
+| 4.1 | Mini app JS: replace hardcoded dropdown arrays with `fetch("/api/tenant-config")` | `miniapp/config_loader.js` | ✅ |
+| 4.2 | Mini app JS: remove hardcoded `MINIAPP_BASE_URL` constant; derive from served URL | `miniapp/config_loader.js` | ✅ |
+| 4.3 | Admin dashboard: replace hardcoded API base with tenant-resolved URL | `miniapp/config_loader.js` | ✅ |
+| 4.4 | Admin dashboard: add tenant config editor UI (stages, materials, statuses, brand) | `master_admin/index.html` | ✅ |
+| 4.5 | Admin dashboard: add per-exec target editor UI | `routers/admin.py` | ✅ |
+| 4.6 | Mini app JS: display tenant `brand_name` and `brand_color` from config | `miniapp/config_loader.js` | ✅ |
+
+> **Integration step:** Add `<script src="/static/config_loader.js"></script>` to `miniapp/index.html`
+> before the closing `</body>` tag, and remove the hardcoded `<option>` tags from the
+> `#workStatus`, `#stage`, and `#material` selects.
 
 ---
 
@@ -70,14 +74,14 @@
 
 | # | Task | File(s) | Status |
 |---|------|---------|--------|
-| 5.1 | Build master admin HTML panel | `master_admin/index.html` | ⏳ |
-| 5.2 | Tenant list + status badges + lead counts | `master_admin/index.html` | ⏳ |
-| 5.3 | Create Tenant form (name, slug, plan, bot token, admin password) | `master_admin/index.html` | ⏳ |
-| 5.4 | Edit Tenant modal (status, plan, branding, keys) | `master_admin/index.html` | ⏳ |
-| 5.5 | Suspend / Activate tenant buttons | `master_admin/index.html` | ⏳ |
-| 5.6 | Rotate miniapp key button + copy-to-clipboard | `master_admin/index.html` | ⏳ |
-| 5.7 | Platform stats dashboard (total tenants, total leads, per-tenant) | `master_admin/index.html` | ⏳ |
-| 5.8 | Platform defaults editor (stages, materials, statuses, targets) | `master_admin/index.html` | ⏳ |
+| 5.1 | Build master admin HTML panel | `master_admin/index.html` | ✅ |
+| 5.2 | Tenant list + status badges + lead counts | `master_admin/index.html` | ✅ |
+| 5.3 | Create Tenant form (name, slug, plan, bot token, admin password) | `master_admin/index.html` | ✅ |
+| 5.4 | Edit Tenant modal (status, plan, branding, keys) | `master_admin/index.html` | ✅ |
+| 5.5 | Suspend / Activate tenant buttons | `master_admin/index.html` | ✅ |
+| 5.6 | Rotate miniapp key button + copy-to-clipboard | `master_admin/index.html` | ✅ |
+| 5.7 | Platform stats dashboard (total tenants, total leads, per-tenant) | `master_admin/index.html` | ✅ |
+| 5.8 | Platform defaults editor (stages, materials, statuses, targets) | `master_admin/index.html` | ✅ |
 
 ---
 
@@ -86,10 +90,10 @@
 | # | Task | File(s) | Status |
 |---|------|---------|--------|
 | 6.1 | Add `.env.example` with all SaaS variables documented | `.env.example` | ✅ |
-| 6.2 | Update `config.py` to read `DATABASE_URL` and `MASTER_ADMIN_PASSWORD` | `config.py` | ⏳ |
-| 6.3 | Update `db.py` to use `DATABASE_URL` env var (SQLite dev, Postgres prod) | `db.py` | ⏳ |
-| 6.4 | Add `Procfile` / `render.yaml` or `docker-compose.yml` for deployment | deployment files | ⏳ |
-| 6.5 | Update `README.md` with SaaS setup instructions (migration, env vars, first tenant) | `README.md` | ⏳ |
+| 6.2 | Update `config.py` to read `DATABASE_URL` and `MASTER_ADMIN_KEY` | `config.py` | ✅ |
+| 6.3 | Update `db.py` to use `DATABASE_URL` env var (SQLite dev, Postgres prod) | `db.py` | ✅ |
+| 6.4 | Add `Procfile` + `render.yaml` for deployment | `Procfile`, `render.yaml` | ✅ |
+| 6.5 | Update `README.md` with SaaS setup instructions | `README.md` | ✅ |
 
 ---
 
@@ -133,8 +137,8 @@ uvicorn main:app --host 0.0.0.0 --port 5001
 ## Key Env Vars for SaaS
 
 | Variable | Purpose |
-|----------|---------|
-| `MASTER_ADMIN_PASSWORD` | Protects all `/master/...` endpoints |
+|----------|---------| 
+| `MASTER_ADMIN_KEY` | Protects all `/master/...` endpoints |
 | `DATABASE_URL` | SQLite (dev) or Postgres (prod) |
 | `TELEGRAM_TOKEN` | Platform-level bot token |
 | `WEBHOOK_URL` | Public URL of this server |
@@ -144,10 +148,9 @@ uvicorn main:app --host 0.0.0.0 --port 5001
 
 ---
 
-## Next Steps
+## Remaining Steps
 
-1. Run `python -m migrations.add_tenant_id` on your existing DB.
-2. Start the server with `uvicorn main:app`.
-3. Use the master admin API at `/master/` to create new tenants.
-4. Wire miniapp JS to fetch config from `/api/tenant-config` (Phase 4).
-5. Build the master admin HTML panel (Phase 5).
+1. **Integrate `config_loader.js` into `miniapp/index.html`** — add the `<script>` tag and remove hardcoded `<option>` tags (see note in Phase 4).
+2. **Serve `master_admin/index.html`** — add a static file mount in `main.py` for `/master-admin/`.
+3. **Run Phase 7 tests** before merging to `main`.
+4. **Set `MASTER_ADMIN_KEY`** in your `.env` before deploying.
