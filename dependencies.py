@@ -1,73 +1,143 @@
 # dependencies.py
 """
-FastAPI dependency functions shared across all routers.
+FastAPI dependency injection helpers.
 
-Usage in a route:
-    @router.get("/some-route")
-    def my_route(
-        db: Session = Depends(get_db),
-        _: None = Depends(require_admin),
-    ):
-        ...
+Used in every router via Depends():
+    db      = Depends(get_db)
+    tenant  = Depends(get_current_tenant)
+    _       = Depends(require_tenant_admin)
+    _       = Depends(require_master_admin)
 """
-from fastapi import Depends, Header, HTTPException, Query
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import Depends, HTTPException, Header, Query, Request
 from sqlalchemy.orm import Session
 from typing import Optional
+from db import SessionLocal
+from models.tenant import Tenant
+from models.platform_admin import verify_platform_admin
+import os
 
-from db import get_db
-from config import ADMIN_PASSWORD, MINIAPP_ACCESS_KEY, MASTER_ADMIN_KEY
+
+# ── Database session ──────────────────────────────────────────────────────────
+
+def get_db():
+    """Yield a SQLAlchemy session, close it after the request."""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
-# ── Tenant-admin auth (X-Admin-Key header or ?key= query param) ───────────────
+# ── Tenant resolution ─────────────────────────────────────────────────────────
 
-def require_admin(
-    x_admin_key: Optional[str] = Header(None, alias="X-Admin-Key"),
-    key: Optional[str] = Query(None),
-):
+def get_current_tenant(
+    request: Request,
+    db: Session = Depends(get_db),
+) -> Tenant:
     """
-    Protects /admin/* routes.
-    Accepts the key via:
-      - X-Admin-Key request header
-      - ?key= query param
+    Resolve the current tenant from the request.
+
+    Resolution order:
+      1. X-Tenant-ID header           (master admin impersonation / API calls)
+      2. ?tenant_id= query param      (explicit API calls)
+      3. Subdomain (host header)      e.g. "titans.yourdomain.com" → slug="titans"
+      4. Single-tenant fallback       if only one tenant exists (backwards compat)
+
+    Raises 404 if no tenant can be resolved.
     """
-    provided = x_admin_key or key or ""
-    if provided != ADMIN_PASSWORD:
+    tenant_id = request.headers.get("X-Tenant-ID") or request.query_params.get("tenant_id")
+
+    if tenant_id:
+        tenant = db.query(Tenant).filter(
+            Tenant.id == int(tenant_id),
+            Tenant.status == "active",
+        ).first()
+        if tenant:
+            return tenant
+
+    # Try subdomain
+    host = request.headers.get("host", "")
+    subdomain = host.split(".")[0] if "." in host else None
+    if subdomain and subdomain not in ("www", "api", "admin"):
+        tenant = db.query(Tenant).filter(
+            Tenant.slug == subdomain,
+            Tenant.status == "active",
+        ).first()
+        if tenant:
+            return tenant
+
+    # Single-tenant fallback (backwards compat for existing deployments)
+    tenants = db.query(Tenant).filter(Tenant.status == "active").all()
+    if len(tenants) == 1:
+        return tenants[0]
+
+    raise HTTPException(status_code=404, detail="Tenant not found")
+
+
+# ── Auth: Tenant Admin ────────────────────────────────────────────────────────
+
+def require_tenant_admin(
+    request: Request,
+    x_admin_key: Optional[str] = Header(default=None),
+    key: Optional[str] = Query(default=None),
+    tenant: Tenant = Depends(get_current_tenant),
+) -> Tenant:
+    """
+    Validate the tenant admin password.
+    Accepts key via X-Admin-Key header OR ?key= query param.
+    Falls back to ADMIN_PASSWORD env var if tenant has no password set.
+    """
+    provided_key = x_admin_key or key or ""
+    expected_key = tenant.admin_password_hash or os.getenv("ADMIN_PASSWORD", "")
+
+    if not expected_key or provided_key != expected_key:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+    return tenant
 
-# ── Mini-app auth (X-Access-Key header or ?key= query param) ─────────────────
+
+# ── Auth: Miniapp Access ──────────────────────────────────────────────────────
 
 def require_app_auth(
-    x_access_key: Optional[str] = Header(None, alias="X-Access-Key"),
-    key: Optional[str] = Query(None),
-):
+    request: Request,
+    x_access_key: Optional[str] = Header(default=None),
+    key: Optional[str] = Query(default=None),
+    tenant: Tenant = Depends(get_current_tenant),
+) -> Tenant:
     """
-    Protects /submit_lead, /generate_quote, and /api/* miniapp routes.
-    If MINIAPP_ACCESS_KEY is not set, all requests are allowed (legacy mode).
+    Validate the miniapp access key for a tenant.
+    Falls back to MINIAPP_ACCESS_KEY env var.
     """
-    if not MINIAPP_ACCESS_KEY:
-        return  # open access — no key configured
-    provided = x_access_key or key or ""
-    if provided != MINIAPP_ACCESS_KEY:
+    provided_key = x_access_key or key or ""
+    expected_key = tenant.miniapp_access_key or os.getenv("MINIAPP_ACCESS_KEY", "")
+
+    # If no key configured at all, allow (open access — legacy behaviour)
+    if not expected_key:
+        return tenant
+
+    if provided_key != expected_key:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+    return tenant
 
-# ── Master-admin auth (platform super-admin) ──────────────────────────────────
+
+# ── Auth: Master Admin ────────────────────────────────────────────────────────
 
 def require_master_admin(
-    x_master_key: Optional[str] = Header(None, alias="X-Master-Key"),
-    key: Optional[str] = Query(None),
+    request: Request,
+    x_admin_key: Optional[str] = Header(default=None),
+    key: Optional[str] = Query(default=None),
+    db: Session = Depends(get_db),
 ):
     """
-    Protects /master-admin/* routes.
-    Set MASTER_ADMIN_KEY in .env to enable.
+    Validate master admin credentials.
+    Accepts key via X-Master-Key header OR ?key= query param.
+    The key must match MASTER_ADMIN_PASSWORD env var.
     """
-    if not MASTER_ADMIN_KEY:
-        raise HTTPException(
-            status_code=503,
-            detail="Master admin not configured. Set MASTER_ADMIN_KEY in .env."
-        )
-    provided = x_master_key or key or ""
-    if provided != MASTER_ADMIN_KEY:
+    provided_key = request.headers.get("X-Master-Key") or x_admin_key or key or ""
+    master_key   = os.getenv("MASTER_ADMIN_PASSWORD", "")
+
+    if not master_key or provided_key != master_key:
         raise HTTPException(status_code=401, detail="Unauthorized")
+
+    return True
