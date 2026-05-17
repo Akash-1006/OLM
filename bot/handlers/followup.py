@@ -2,7 +2,8 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from models.followup import FollowUp
-from db import db_session
+from db import SessionLocal
+
 
 async def handle_followup_response(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -20,20 +21,28 @@ async def handle_followup_response(update: Update, ctx: ContextTypes.DEFAULT_TYP
 
     elif status == 'lost':
         keyboard = [
-            [InlineKeyboardButton('Price Issue', callback_data=f'reason_{lead_id}_price')],
-            [InlineKeyboardButton('Quality Concern', callback_data=f'reason_{lead_id}_quality')],
-            [InlineKeyboardButton('Delivery Delay', callback_data=f'reason_{lead_id}_delay')],
-            [InlineKeyboardButton('Other', callback_data=f'reason_{lead_id}_other')],
+            [InlineKeyboardButton('Price Issue',      callback_data=f'reason_{lead_id}_price')],
+            [InlineKeyboardButton('Quality Concern',  callback_data=f'reason_{lead_id}_quality')],
+            [InlineKeyboardButton('Delivery Delay',   callback_data=f'reason_{lead_id}_delay')],
+            [InlineKeyboardButton('Other',            callback_data=f'reason_{lead_id}_other')],
         ]
-        await query.edit_message_text('Reason for not converting?',
-            reply_markup=InlineKeyboardMarkup(keyboard))
+        await query.edit_message_text(
+            'Reason for not converting?',
+            reply_markup=InlineKeyboardMarkup(keyboard),
+        )
         return 'FU_LOST_REASON'
 
     elif status == 'progress':
         await query.edit_message_text('Enter next follow-up date (YYYY-MM-DD)')
         return 'FU_NEXT_DATE'
 
-async def save_followup(lead_id, status, detail):
-    fu = FollowUp(lead_id=lead_id, status=status, detail=detail)
-    db_session.add(fu)
-    db_session.commit()
+
+def save_followup(lead_id: int, status: str, detail: str) -> None:
+    """Persist a FollowUp row. Opens and closes its own session."""
+    session = SessionLocal()
+    try:
+        fu = FollowUp(lead_id=lead_id, status=status, detail=detail)
+        session.add(fu)
+        session.commit()
+    finally:
+        session.close()
